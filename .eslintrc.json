@@ -1,3 +1,21 @@
 {
-  "extends": "next/core-web-vitals"
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "parserOptions": {
+        "project": "tsconfig.json"
+      }
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
+  }
 }
