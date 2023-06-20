@@ -1,13 +1,20 @@
-import '@/styles/globals.css'
+import "@/styles/globals.css";
 import "@/styles/nprogress.css";
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app";
 import { makeStore } from "../redux/store";
 import { Provider } from "react-redux";
 
 import NProgress from "nprogress";
 
 import { useRouter } from "next/router";
-import { useEffect } from 'react';
+import { useEffect } from "react";
+
+import { Nunito_Sans } from "next/font/google";
+
+const font = Nunito_Sans({
+  subsets: ["cyrillic"],
+  weight: ["400", "600", "700", "800"],
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -28,5 +35,14 @@ export default function App({ Component, pageProps }: AppProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <Provider store={makeStore}><Component {...pageProps} /></Provider>
+  return (
+    <Provider store={makeStore}>
+      <style jsx global>{`
+        html {
+          font-family: ${font.style.fontFamily};
+        }
+      `}</style>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }
