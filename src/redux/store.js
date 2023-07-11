@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { baseApiSlice } from "services/baseApiSlice";
+import { apiHooks } from "services/apiHooks";
 
 import storage from "redux-persist/lib/storage";
 
@@ -20,11 +20,11 @@ import authReducer from "./auth/authSlice";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: [baseApiSlice.reducerPath],
+  blacklist: [apiHooks.reducerPath],
 };
 
 const reducers = combineReducers({
-  [baseApiSlice.reducerPath]: baseApiSlice.reducer,
+  [apiHooks.reducerPath]: apiHooks.reducer,
   auth: authReducer,
 });
 

@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
 
 export const apiHooks = createApi({
   baseQuery,
-  tagTypes: ["User", "Dashboard", "Programs", "ProgramView", "TalentView"],
+  tagTypes: ["Dashboard", "Invoices", "Payouts"],
   endpoints: (builder) => ({
     joinWaitlist: builder.mutation({
       query: (email) => ({
