@@ -4,7 +4,7 @@
 }
 
 #nprogress .bar {
-  background: #9d2a57;
+  background: #0063CF;
   position: fixed;
   z-index: 1031;
   top: 0;
@@ -15,7 +15,7 @@
 
 @media screen and (max-width: 475px) {
   #nprogress .bar {
-    background: #9d2a57;
+    background: #0063CF;
   }
 }
 
@@ -27,7 +27,7 @@
   width: 100px;
   height: 100%;
   opacity: 1;
-  box-shadow: 0 0 10px #9d2a57, 0 0 5px #9d2a57;
+  box-shadow: 0 0 10px #0099E8, 0 0 5px #0063CF;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
   -ms-transform: rotate(3deg) translate(0px, -4px);

@@ -1,7 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { apiHooks } from "services/apiHooks";
-
 import storage from "redux-persist/lib/storage";
 
 import {
@@ -16,6 +14,7 @@ import {
 } from "redux-persist";
 
 import authReducer from "./auth/authSlice";
+import { apiHooks } from "@/services/apiHooks";
 
 const persistConfig = {
   key: "root",
@@ -37,7 +36,7 @@ export const makeStore = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApiSlice.middleware),
+    }).concat(apiHooks.middleware),
 });
 
 export const persistor = persistStore(makeStore);
