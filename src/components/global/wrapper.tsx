@@ -94,7 +94,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
           </ul>
         </div>
       </aside>
-      <div className="p-4 sm:ml-64 h-full bg-[#f9fafb]">{children}</div>
+      <div className="p-4 sm:ml-64 h-full bg-[#f0ede6]">{children}</div>
     </main>
   );
 }

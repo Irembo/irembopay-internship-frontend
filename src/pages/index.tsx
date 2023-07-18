@@ -6,16 +6,12 @@ import {
   useGetBalanceQuery,
   useGetProjectedBalanceQuery,
   useGetTotalPaidInvoicesQuery,
-  useGetTranscationValueLast7DaysQuery,
 } from "@/services/apiHooks";
 
 export default function Home() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
   const { data: totalInvoices, isLoading: loadingTotalInvoices } =
     useGetTotalPaidInvoicesQuery(accountId);
-
-  const { data: totalValue7, isLoading: loadingValue7 } =
-    useGetTranscationValueLast7DaysQuery(accountId);
 
   const { data: balances, isLoading: loadingBalances } =
     useGetBalanceQuery(accountId);
@@ -36,7 +32,7 @@ export default function Home() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
+            className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <circle cx="12" cy="12" r="10" />
             <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
@@ -55,7 +51,7 @@ export default function Home() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
+            className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <rect width="20" height="12" x="2" y="6" rx="2" />
             <circle cx="12" cy="12" r="2" />
@@ -74,7 +70,7 @@ export default function Home() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
+            className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <path d="M4 10h12" />
             <path d="M4 14h9" />
@@ -93,7 +89,7 @@ export default function Home() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
+            className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <path d="M18 7c0-5.333-8-5.333-8 0" />
             <path d="M10 7v14" />
@@ -125,7 +121,7 @@ export default function Home() {
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
+                  className="lucide lucide-bar-chart-horizontal-big  text-white"
                 >
                   <path d="M3 3v18h18" />
                   <rect width="12" height="4" x="7" y="5" rx="1" />
@@ -137,32 +133,6 @@ export default function Home() {
             />
           )}
           {loadingTotalInvoices && <IsLoadingOneStat />}
-
-          {totalValue7 && (
-            <OneStat
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-bar-chart-horizontal-big absolute top-2 right-3 text-gray-500"
-                >
-                  <path d="M3 3v18h18" />
-                  <rect width="12" height="4" x="7" y="5" rx="1" />
-                  <rect width="7" height="4" x="7" y="13" rx="1" />
-                </svg>
-              }
-              title="Total Value Last Week"
-              value={totalValue7}
-            />
-          )}
-          {loadingValue7 && <IsLoadingOneStat />}
 
           {balances &&
             balances?.map(
@@ -209,20 +179,30 @@ function OneStat({
   projectedValue?: number;
 }) {
   return (
-    <div className="bg-white relative rounded-xl p-4 shadow-md w-[225px] items-start justify-center gap-2 flex flex-col">
-      <h2 className="text-sm text-gray-500 font-medium">{title}</h2>
-      <span title={value?.toString()} className="text-3xl">
-        {formatToK(value)}
-      </span>
-      {projectedValue && (
-        <span className="text-sm text-gray-500">
-          Projected increase{" "}
-          {projectedValue - value > 0
-            ? formatToK(projectedValue - value)
-            : projectedValue - value}{" "}
+    <div className="bg-white relative rounded-xl p-4 shadow-md w-[300px] items-start justify-start gap-8 flex">
+      <div className="h-12 w-12 my-auto bg-primary/70 rounded-md flex justify-center items-center">
+        {icon}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h2 className="text-sm text-gray-500 font-medium">{title}</h2>
+        <span
+          title={value?.toString()}
+          className="text-3xl font-semibold tracking-tighter text-gray-600"
+        >
+          {formatToK(value)}
         </span>
-      )}
-      {icon}
+        {projectedValue ? (
+          <span className="text-sm text-gray-500 font-medium">
+            Projected increase{" "}
+            {projectedValue - value > 0
+              ? formatToK(projectedValue - value)
+              : projectedValue - value}{" "}
+          </span>
+        ) : (
+          <span></span>
+        )}
+      </div>
     </div>
   );
 }

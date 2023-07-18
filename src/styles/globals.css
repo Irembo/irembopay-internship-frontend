@@ -18,7 +18,7 @@ body {
   font-family: "Nunito Sans", sans-serif;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: #fff;
+  background-color: #f0ede6;
 }
 
 * {
