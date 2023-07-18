@@ -1,3 +1,4 @@
+import Transcations from "@/components/dashboard/transcations";
 import Header from "@/components/global/head";
 import Wrapper from "@/components/global/wrapper";
 import { formatToK } from "@/lib/formatters";
@@ -19,10 +20,7 @@ export default function Home() {
   const { data: balances, isLoading: loadingBalances } =
     useGetBalanceQuery(accountId);
 
-  const { data: projectedBalances, isLoading: loadingProjectedBalances } =
-    useGetProjectedBalanceQuery(accountId);
-
-  console.log(projectedBalances);
+  const { data: projectedBalances } = useGetProjectedBalanceQuery(accountId);
 
   const getCurrencyIcon = (currency: string) => {
     switch (currency) {
@@ -192,6 +190,8 @@ export default function Home() {
 
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
         </section>
+
+        <Transcations />
       </Wrapper>
     </>
   );

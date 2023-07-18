@@ -96,3 +96,8 @@ textarea:focus {
 .blue-gradient {
   background: linear-gradient(90deg, #0099E8 0%, #0063CF 100%);
 }
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
