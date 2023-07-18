@@ -69,7 +69,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     },
   ];
   return (
-    <main>
+    <main className="">
       <aside
         id="logo-sidebar"
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-4 transition-transform -translate-x-full bg-primary border-r border-gray-200 sm:translate-x-0"
@@ -94,7 +94,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
           </ul>
         </div>
       </aside>
-      <div className="p-4 sm:ml-64">{children}</div>
+      <div className="p-4 sm:ml-64 h-full bg-[#f9fafb]">{children}</div>
     </main>
   );
 }
