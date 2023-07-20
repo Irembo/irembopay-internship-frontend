@@ -14,6 +14,8 @@ import {
 } from "@/services/apiHooks";
 import { useState } from "react";
 
+import { motion } from "framer-motion";
+
 export default function Home() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
   const { data: totalInvoices, isLoading: loadingTotalInvoices } =
@@ -309,7 +311,12 @@ function OneStat({
   projectedValue?: number;
 }) {
   return (
-    <div className="bg-white relative rounded-xl p-4 shadow-md w-[300px] items-start justify-start gap-8 flex">
+    <motion.div
+      initial={{ y: 10, opacity: 0.5 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="bg-white relative rounded-xl p-4 shadow-md w-[300px] items-start justify-start gap-8 flex"
+    >
       <div className="h-12 w-12 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}
       </div>
@@ -333,12 +340,17 @@ function OneStat({
           <span></span>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function IsLoadingOneStat() {
   return (
-    <div className="animate-pulse whitespace-nowrap w-[300px] bg-gray-300 h-28 rounded-xl"></div>
+    <motion.div
+      initial={{ y: 10, opacity: 0.5 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="animate-pulse whitespace-nowrap w-[300px] bg-gray-300 h-[124px] rounded-xl"
+    ></motion.div>
   );
 }
