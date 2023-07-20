@@ -1,4 +1,3 @@
-import Transcations from "@/components/dashboard/transcations";
 import Header from "@/components/global/head";
 import Wrapper from "@/components/global/wrapper";
 import { formatToK } from "@/lib/formatters";
@@ -160,8 +159,6 @@ export default function Home() {
 
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
         </section>
-
-        <Transcations />
       </Wrapper>
     </>
   );

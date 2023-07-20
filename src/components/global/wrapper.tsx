@@ -25,7 +25,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     },
     {
       name: "Transactions",
-      link: "/transactions",
+      link: "/transcations",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
