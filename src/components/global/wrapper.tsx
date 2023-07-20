@@ -31,8 +31,8 @@ export default function Wrapper({
       ),
     },
     {
-      name: "Transactions",
-      link: "/transcations",
+      name: "Transcations",
+      link: "/transactions",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

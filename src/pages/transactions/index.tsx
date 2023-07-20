@@ -47,7 +47,7 @@ export default function Transcations() {
                         <tr
                           key={i}
                           onClick={() =>
-                            router.push(`/transcations/${token?.id}`)
+                            router.push(`/transactions/${token?.id}`)
                           }
                           className="cursor-pointer hover:bg-gray-50 px-4"
                         >
