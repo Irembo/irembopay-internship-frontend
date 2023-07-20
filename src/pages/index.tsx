@@ -1,5 +1,8 @@
+import DailyTranscations from "@/components/dashboard/charts/dailyTranscations";
+import SettledTranscations from "@/components/dashboard/charts/settledTranscations";
 import Header from "@/components/global/head";
 import Wrapper from "@/components/global/wrapper";
+import CreateAvatar from "@/lib/avatar";
 import { formatToK } from "@/lib/formatters";
 import {
   useGetBalanceQuery,
@@ -105,7 +108,19 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Wrapper>
+      <Wrapper custom="flex flex-col justify-center min-h-screen gap-16 relative">
+        <div className="absolute top-8 right-4 flex justify-between inset-x-0 px-4">
+          <h1 className="text-gray-800 font-bold text-2xl">Hi, welcome! 👋</h1>
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-0">
+              <p className="text-xl font-semibold text-gray-800">Jane Doe</p>
+              <span className="text-gray-500 text-base font-medium">
+                jane.doe@hello.com
+              </span>
+            </div>
+            <CreateAvatar seed="Jane Doe" />
+          </div>
+        </div>
         <section className="w-full h-1/2 flex justify-center gap-8 mt-8">
           {totalInvoices && (
             <OneStat
@@ -158,6 +173,22 @@ export default function Home() {
             )}
 
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
+        </section>
+
+        <section className="w-full gap-8 h-[400px] flex">
+          <div className="flex w-1/2 flex-col">
+            <h2 className="text-gray-800 font-semibold text-xl">
+              Daily Paid Transcations
+            </h2>
+            <DailyTranscations />
+          </div>
+
+          <div className="flex w-1/2 flex-col">
+            <h2 className="text-gray-800 font-semibold text-xl">
+              Daily Settled Transcations
+            </h2>
+            <SettledTranscations />
+          </div>
         </section>
       </Wrapper>
     </>

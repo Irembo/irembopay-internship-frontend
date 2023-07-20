@@ -5,7 +5,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 
-export default function Wrapper({ children }: { children: React.ReactNode }) {
+export default function Wrapper({
+  children,
+  custom,
+}: {
+  children: React.ReactNode;
+  custom: string;
+}) {
   const sideItems = [
     {
       name: "Dashboard",
@@ -102,7 +108,9 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
           </ul>
         </div>
       </aside>
-      <div className="p-4 sm:ml-64 h-full bg-[#f0ede6]">{children}</div>
+      <div className={`p-4 sm:ml-64 h-full bg-[#f0ede6] ${custom}`}>
+        {children}
+      </div>
     </main>
   );
 }

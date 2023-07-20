@@ -13,14 +13,14 @@ export default function CreateAvatar({
   return (
     <div
       onClick={() => router.push("/profile")}
-      className={`relative h-[45px] w-[45px] min-w-[45px] rounded-full bg-white ${scale}`}
+      className={`relative h-[60px] w-[60px] min-w-[60px] rounded-full ${scale}`}
     >
       <img
-        src={`https://api.dicebear.com/6.x/initials/svg?radius=30&seed=${seed}&scale=100&fontWeight=500`}
+        src={`https://api.dicebear.com/6.x/initials/svg?radius=50&seed=${seed}&scale=100&fontWeight=500`}
         alt="User"
         className="rounded-full"
-        height={45}
-        width={45}
+        height={50}
+        width={50}
       />
     </div>
   );
