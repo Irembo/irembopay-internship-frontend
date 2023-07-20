@@ -18,7 +18,7 @@ export function LoadingRow({ colSpan }: { colSpan: number }) {
       {[...Array(colSpan)].map((_, index) => (
         <td
           key={index}
-          className="animate-pulse whitespace-nowrap bg-[#2C2C2C] px-4 py-6 text-sm text-white"
+          className="animate-pulse whitespace-nowrap bg-gray-200 first:rounded-l-xl last:rounded-r-xl px-4 py-6 text-sm text-white"
         ></td>
       ))}
     </tr>

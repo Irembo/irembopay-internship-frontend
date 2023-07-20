@@ -9,30 +9,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const generateDummyData = () => {
-  const data = [];
-  const oneDayAgo = new Date().getTime() - 24 * 60 * 60 * 1000;
-
-  // Generate a rising pattern
-  const risingPattern = Array.from({ length: 70 }, (_, i) => i * 8000);
-
-  // Generate a falling pattern
-  const fallingPattern = Array.from({ length: 30 }, (_, i) => (69 - i) * 8000);
-
-  // Combine the rising and falling patterns
-  const pattern = [...risingPattern, ...fallingPattern];
-
-  for (let i = 0; i < 100; i++) {
-    const createdAt = oneDayAgo + i * 15 * 60 * 1000; // Generate data every 15 minutes
-    const variation = pattern[i % 100];
-    const randomVariation = Math.floor(Math.random() * 50000) - 2000; // Random variation between -4000 and 4000
-    const tvl = 100000 + variation + randomVariation; // Start with a base value of 100k and add the variation and random variation
-    data.push({ createdAt, tvl });
-  }
-
-  return data;
-};
-
 const convertDate = (timestamp: string) => {
   const date = new Date(timestamp);
   const hour = date.getHours();
