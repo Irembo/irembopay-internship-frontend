@@ -53,6 +53,16 @@ export const apiHooks = createApi({
         url: `account-statistics/projected-balance/${accountId}`,
       }),
     }),
+    getDailyPaidInvoices: builder.query({
+      query: (accountId, cycle = 30) => ({
+        url: `account-statistics/total-transcations/${accountId}/cycle=${cycle}`,
+      }),
+    }),
+    getDailySettledPayouts: builder.query({
+      query: (accountId, cycle = 30) => ({
+        url: `account-statistics/total-settled-transcations/${accountId}/cycle=${cycle}`,
+      }),
+    }),
   }),
 });
 
@@ -66,4 +76,6 @@ export const {
   useAverageTranscationValueDailyQuery,
   useGetBalanceQuery,
   useGetProjectedBalanceQuery,
+  useGetDailyPaidInvoicesQuery,
+  useGetDailySettledPayoutsQuery,
 } = apiHooks;
