@@ -4,6 +4,7 @@ import React from "react";
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import CreateAvatar from "@/lib/avatar";
 
 export default function Wrapper({
   children,
@@ -109,8 +110,20 @@ export default function Wrapper({
         </div>
       </aside>
       <div
-        className={`p-4 sm:ml-[17rem] w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] ${custom}`}
+        className={`p-4 relative sm:ml-[17rem] pt-24 w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] ${custom}`}
       >
+        <div className="absolute top-8 right-4 inset-x-0 flex justify-between w-auto px-4">
+          <h1 className="text-gray-800 font-bold text-2xl">Hi, welcome! 👋</h1>
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-0">
+              <p className="text-xl font-semibold text-gray-800">Jane Doe</p>
+              <span className="text-gray-500 text-base font-medium">
+                jane.doe@hello.com
+              </span>
+            </div>
+            <CreateAvatar seed="Jane Doe" />
+          </div>
+        </div>
         {children}
       </div>
     </main>

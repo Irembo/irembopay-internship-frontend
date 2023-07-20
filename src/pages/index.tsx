@@ -3,7 +3,6 @@ import SettledTranscations from "@/components/dashboard/charts/settledTranscatio
 import Header from "@/components/global/head";
 import Loading from "@/components/global/loading";
 import Wrapper from "@/components/global/wrapper";
-import CreateAvatar from "@/lib/avatar";
 import { formatToK } from "@/lib/formatters";
 import {
   useGetBalanceQuery,
@@ -137,18 +136,7 @@ export default function Home() {
     <>
       <Header />
       <Wrapper custom="flex flex-col justify-center min-h-screen gap-16 relative">
-        <div className="absolute top-8 right-4 flex justify-between inset-x-0 px-4">
-          <h1 className="text-gray-800 font-bold text-2xl">Hi, welcome! 👋</h1>
-          <div className="flex gap-4">
-            <div className="flex flex-col gap-0">
-              <p className="text-xl font-semibold text-gray-800">Jane Doe</p>
-              <span className="text-gray-500 text-base font-medium">
-                jane.doe@hello.com
-              </span>
-            </div>
-            <CreateAvatar seed="Jane Doe" />
-          </div>
-        </div>
+
         <section className="w-full h-1/2 flex justify-center gap-8 mt-8">
           {totalInvoices && (
             <OneStat
@@ -315,7 +303,7 @@ function OneStat({
       initial={{ y: 10, opacity: 0.5 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-[300px] items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-[300px] pr-0 items-start justify-start gap-8 flex"
     >
       <div className="h-12 w-12 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}

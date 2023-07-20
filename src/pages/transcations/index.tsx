@@ -46,7 +46,9 @@ export default function Transcations() {
                       data?.content.map((token: InvoiceProps, i: number) => (
                         <tr
                           key={i}
-                          onClick={() => router.push(`/invoice/${token?.id}`)}
+                          onClick={() =>
+                            router.push(`/transcations/${token?.id}`)
+                          }
                           className="cursor-pointer hover:bg-gray-50 px-4"
                         >
                           <td className="whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm">

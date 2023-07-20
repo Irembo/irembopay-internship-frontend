@@ -5,8 +5,8 @@ import React from "react";
 export default function InvoiceView() {
   return (
     <Wrapper>
-      <Header title="" />
-      <h1></h1>
+      <Header title="Invoice View" />
+      <section className="w-full"></section>
     </Wrapper>
   );
 }
