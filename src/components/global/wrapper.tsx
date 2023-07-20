@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   const sideItems = [
@@ -24,7 +25,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     },
     {
       name: "Transactions",
-      link: "/",
+      link: "/transactions",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +48,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     },
     {
       name: "Payment Accounts",
-      link: "/",
+      link: "/payment-accounts",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +69,9 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
       ),
     },
   ];
+
+  const router = useRouter();
+
   return (
     <main className="">
       <aside
@@ -89,7 +93,11 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
               </Link>
             </li>
             {sideItems.map((item, i) => (
-              <OneSidebar key={i} {...item} />
+              <OneSidebar
+                isActive={router.pathname === item.link}
+                key={i}
+                {...item}
+              />
             ))}
           </ul>
         </div>
@@ -103,10 +111,12 @@ function OneSidebar({
   name,
   link,
   icon,
+  isActive,
 }: {
   name: string;
   link: string;
   icon: React.ReactNode;
+  isActive: boolean;
 }) {
   return (
     <motion.li
@@ -116,7 +126,9 @@ function OneSidebar({
     >
       <Link
         href={link}
-        className="flex items-center border-[1px] ease-in border-white/30 text-lg p-2 text-white rounded-lg hover:bg-white hover:text-primary group hover:border-white transition duration-200"
+        className={`flex items-center border-[1px] ease-in border-white/30 text-lg p-2 text-white rounded-lg hover:bg-white hover:text-primary group hover:border-white transition duration-200 ${
+          isActive ? "bg-primaryLight" : "bg-transparent"
+        }`}
       >
         {icon}
         <span className="ml-3">{name}</span>
