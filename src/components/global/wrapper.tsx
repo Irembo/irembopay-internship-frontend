@@ -108,7 +108,9 @@ export default function Wrapper({
           </ul>
         </div>
       </aside>
-      <div className={`p-4 sm:ml-64 h-full bg-[#f0ede6] ${custom}`}>
+      <div
+        className={`p-4 sm:ml-[17rem] w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] ${custom}`}
+      >
         {children}
       </div>
     </main>
