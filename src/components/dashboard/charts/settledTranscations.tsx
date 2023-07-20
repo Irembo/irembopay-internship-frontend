@@ -1,8 +1,13 @@
 import React from "react";
 import AreaChart from "./lineChart";
 
-const SettledTranscations = () => {
-  return <AreaChart colorStop={"#0063CF"} />;
+
+interface DailyTranscationsProps {
+  data: any[];
+}
+
+const SettledTranscations = ({ data }: DailyTranscationsProps) => {
+  return <AreaChart data={data} colorStop={"#0063CF"} unit="Rwf" />;
 };
 
 export default SettledTranscations;

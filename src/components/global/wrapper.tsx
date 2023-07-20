@@ -10,7 +10,7 @@ export default function Wrapper({
   custom,
 }: {
   children: React.ReactNode;
-  custom: string;
+  custom?: string;
 }) {
   const sideItems = [
     {

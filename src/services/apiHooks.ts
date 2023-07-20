@@ -54,13 +54,13 @@ export const apiHooks = createApi({
       }),
     }),
     getDailyPaidInvoices: builder.query({
-      query: (accountId, cycle = 30) => ({
-        url: `account-statistics/total-transcations/${accountId}/cycle=${cycle}`,
+      query: ({accountId, activeCycleInvoices = 100}) => ({
+        url: `account-statistics/total-transcations/${accountId}/${activeCycleInvoices}`,
       }),
     }),
     getDailySettledPayouts: builder.query({
-      query: (accountId, cycle = 30) => ({
-        url: `account-statistics/total-settled-transcations/${accountId}/cycle=${cycle}`,
+      query: ({accountId, activeCyclePayouts = 100}) => ({
+        url: `account-statistics/total-settled-transcations/${accountId}/${activeCyclePayouts}`,
       }),
     }),
   }),

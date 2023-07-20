@@ -41,10 +41,12 @@ const convertDate = (timestamp: string) => {
 
 interface ChartProps {
   colorStop: string;
+  data: any[];
+  unit: string;
 }
 
-export default function AreaChart({ colorStop }: ChartProps) {
-  const data = generateDummyData();
+export default function AreaChart({ colorStop, data, unit }: ChartProps) {
+  // const data = generateDummyData();
   return (
     <ResponsiveContainer className="bg-white my-4">
       <ComposedChart
@@ -66,7 +68,7 @@ export default function AreaChart({ colorStop }: ChartProps) {
           </linearGradient>
         </defs>
         <XAxis
-          dataKey="createdAt"
+          dataKey="date"
           tickFormatter={convertDate}
           tick={{
             fontSize: 12,
@@ -77,12 +79,12 @@ export default function AreaChart({ colorStop }: ChartProps) {
         <CartesianGrid vertical={false} stroke="#ffffff" />
 
         <Line
-          type="basis"
-          unit=" Invoices"
+          type="linear"
+          unit={unit}
           isAnimationActive
           strokeLinecap="round"
           strokeWidth={3}
-          dataKey="tvl"
+          dataKey="value"
           stroke={colorStop}
           dot={false}
           legendType="none"
@@ -91,8 +93,9 @@ export default function AreaChart({ colorStop }: ChartProps) {
           animationDuration={1000}
         />
         <Area
-          type="basis"
-          dataKey="tvl"
+          type="linear"
+          unit={unit}
+          dataKey="value"
           isAnimationActive
           stroke={""}
           strokeWidth={2}
