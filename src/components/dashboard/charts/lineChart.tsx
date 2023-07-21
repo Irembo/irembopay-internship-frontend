@@ -10,9 +10,11 @@ import {
 } from "recharts";
 
 const convertDate = (timestamp: string) => {
+  // format of date: Jan 15
   const date = new Date(timestamp);
-  const hour = date.getHours();
-  return `${hour}:00`;
+  const month = date.toLocaleString("default", { month: "short" });
+  const day = date.getDate();
+  return `${month} ${day}`;
 };
 
 interface ChartProps {
@@ -29,7 +31,7 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
         width={400}
         height={300}
         data={data}
-        margin={{ top: 0, right: 5, left: 5, bottom: 5 }}
+        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
       >
         <defs>
           <linearGradient
@@ -45,12 +47,11 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
         </defs>
         <XAxis
           dataKey="date"
-          tickFormatter={convertDate}
+          tickFormatter={(timestamp) => convertDate(timestamp)}
           tick={{
-            fontSize: 12,
+            fontSize: 10,
           }}
         />
-        {/* <Tooltip /> */}
         <Tooltip />
         <CartesianGrid vertical={false} stroke="#ffffff" />
 
