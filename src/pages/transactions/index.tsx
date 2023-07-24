@@ -40,6 +40,12 @@ export default function Transcations() {
 
   // Helper function to handle pagination click
   const handlePageClick = (pageNumber: number) => {
+    if (pageNumber < 1) {
+      return;
+    }
+    if (pageNumber > totalPages) {
+      return;
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
     setPage(pageNumber);
   };
@@ -239,7 +245,7 @@ export default function Transcations() {
   );
 }
 
-function getStatus(status: string) {
+export function getStatus(status: string) {
   if (status === "paid") {
     return "bg-green-100 text-green-800";
   } else if (status === "payout_initiated") {

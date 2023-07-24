@@ -1,4 +1,3 @@
-import type { Key } from "react";
 import React, { useEffect, useState } from "react";
 import Wrapper from "@/components/global/wrapper";
 import Header from "@/components/global/head";
@@ -7,10 +6,13 @@ import { OneValue } from "./transactions/[id]";
 import {
   useGet30DaysTotalPaidQuery,
   useGetBalancePaymentAccountQuery,
+  useGetPaymentAccountPayoutsQuery,
   useGetPaymentAccountsQuery,
   useGetTranscationValueLast30DaysQuery,
   useGetTranscationValueLast7DaysQuery,
 } from "@/services/apiHooks";
+import { EmptyState, LoadingRow } from "@/components/global/loading";
+import { formatDate, thousandSeparator } from "@/lib/formatters";
 
 export interface PaymentAccount {
   id: string;
@@ -21,6 +23,20 @@ export interface PaymentAccount {
   accountName: string;
 }
 
+export interface PayoutProps {
+  id: string;
+  currency: string;
+  invoiceNumber: string;
+  amount: number;
+  createdAt: string;
+  expiryAt: string;
+  status: string;
+  settlementDate: string;
+  settlementStatus: string;
+  transactionReference: string;
+  narration: string;
+}
+
 export default function Transcations() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
 
@@ -29,10 +45,10 @@ export default function Transcations() {
   const [activeAccount, setActiveAccount] = useState<PaymentAccount>();
 
   useEffect(() => {
-    if (data?.content) {
+    if (data?.content && activeAccount === undefined) {
       setActiveAccount(data?.content[0]);
     }
-  }, [data?.content]);
+  }, [data?.content, activeAccount]);
 
   const accountNumber = activeAccount?.id;
 
@@ -70,6 +86,42 @@ export default function Transcations() {
     }
   );
 
+  const [page, setPage] = React.useState(1);
+
+  const { data: allPayouts, isLoading: isLoading } =
+    useGetPaymentAccountPayoutsQuery(
+      { accountNumber, page },
+      {
+        skip: !accountNumber,
+      }
+    );
+
+  const totalPages = allPayouts?.totalPages;
+
+  useEffect(() => {
+    if (allPayouts?.number) {
+      setPage(allPayouts?.number);
+    }
+  }, [allPayouts?.number]);
+
+  // Helper function to generate an array of numbers from start to end
+  const range = (start: number, end: number) => {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  // Helper function to handle pagination click
+  const handlePageClick = (pageNumber: number) => {
+    if (pageNumber < 1) {
+      return;
+    }
+    if (pageNumber > totalPages) {
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    setPage(pageNumber);
+  };
+
   return (
     <Wrapper custom="flex flex-col">
       <Header title="Payment Accounts" />
@@ -93,7 +145,7 @@ export default function Transcations() {
           ))}
         </nav>
 
-        <section className="w-full bg-white text-gray-600 p-4 my-6 rounded-2xl flex gap-2 px-6">
+        <section className="w-full bg-white text-gray-600 p-4 my-6 rounded-2xl flex gap-2 px-8">
           <div className="flex flex-col w-[30%] gap-y-6">
             <OneValue
               label="Account Name"
@@ -197,6 +249,188 @@ export default function Transcations() {
             />
           </div>
         </section>
+
+        <div className="w-auto">
+          <div className="mt-8">
+            <div className="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div className="relative overflow-hidden rounded-lg bg-white px-0">
+                  <table className="min-w-full divide-y divide-primaryLight">
+                    <thead className="bg-[#f9fafb]">
+                      <tr className="text-sm font-medium shadow text-[#000000]">
+                        <th className="min-w-[12rem] pl-8  px-3 py-3.5 text-left">
+                          Reference
+                        </th>
+                        <th className="px-3 py-3.5 text-left">Amount</th>
+                        <th className="px-3 py-3.5 text-left">Narration</th>
+                        <th className="px-3 py-3.5 text-left">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-gray-500">
+                      {!isLoading &&
+                        allPayouts?.content?.map(
+                          (token: PayoutProps, i: number) => (
+                            <tr
+                              key={i}
+                              className="cursor-pointer hover:bg-gray-50 px-4"
+                            >
+                              <td className="whitespace-nowrap px-3 pl-8 border-b-[1px] border-gray-100 py-4 text-sm">
+                                <div className="w-full flex flex-col">
+                                  {token?.transactionReference}
+                                </div>
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-4 border-b-[1px] border-gray-100 text-sm">
+                                {thousandSeparator(token?.amount ?? 0)}{" "}
+                                {token?.currency}
+                              </td>
+                              <td
+                                className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-xs lg:table-cell `}
+                              >
+                                {token?.narration}
+                              </td>
+                              <td
+                                className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm lg:table-cell`}
+                              >
+                                {formatDate(token?.settlementDate)}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      {isLoading &&
+                        [...Array(5)].map((_, index) => (
+                          <LoadingRow colSpan={4} key={index} />
+                        ))}
+                      {allPayouts?.content?.length === 0 && (
+                        <EmptyState
+                          colSpan={4}
+                          message="No transactions available"
+                        />
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {totalPages > 1 && (
+                  <nav
+                    className="isolate inline-flex mt-8 -space-x-px rounded-md shadow-sm"
+                    aria-label="Pagination"
+                  >
+                    <button
+                      className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      onClick={() => handlePageClick(page - 1)}
+                      disabled={page === 1} // Disable the button if on the first page
+                    >
+                      <span className="sr-only">Previous</span>
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+
+                    {/* Show first page always */}
+                    {/* {page === 1 && (
+                      <button
+                        aria-current="page"
+                        className={`relative z-10 inline-flex items-center ${
+                          page === 1
+                            ? "bg-primary text-white" // Highlight the current page
+                            : "text-gray-400"
+                        } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                        onClick={() => handlePageClick(1)}
+                      >
+                        1
+                      </button>
+                    )} */}
+
+                    {range(1, totalPages).map((pg) => (
+                      <button
+                        key={pg}
+                        className={`relative inline-flex items-center ${
+                          pg === page
+                            ? "z-10 bg-primary text-white" // Highlight the current page
+                            : "text-gray-900"
+                        } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-40 focus:z-20 focus:outline-offset-0`}
+                        onClick={() => handlePageClick(pg)}
+                      >
+                        {pg}
+                      </button>
+                    ))}
+                    {/* Show ellipsis (...) and the last 3 pages */}
+                    {totalPages > 3 && (
+                      <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+                        ...
+                      </span>
+                    )}
+
+                    {/* Show last 2 pages */}
+                    {totalPages > 4 && (
+                      <>
+                        <button
+                          className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                            page === totalPages - 2
+                              ? "z-10 bg-primary text-white" // Highlight the current page
+                              : "text-gray-900"
+                          } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
+                          onClick={() => handlePageClick(totalPages - 1)}
+                        >
+                          {totalPages - 2}
+                        </button>
+                        <button
+                          className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                            page === totalPages - 1
+                              ? "z-10 bg-primary text-white" // Highlight the current page
+                              : "text-gray-900"
+                          } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
+                          onClick={() => handlePageClick(totalPages - 1)}
+                        >
+                          {totalPages - 1}
+                        </button>
+                        <button
+                          className={`relative inline-flex items-center rounded-r-md px-2 py-2 font-semibold text-sm text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+                            page === totalPages
+                              ? "bg-primary text-white" // Highlight the current page
+                              : "text-gray-900"
+                          }`}
+                          onClick={() => handlePageClick(totalPages)}
+                        >
+                          {totalPages}
+                        </button>
+                      </>
+                    )}
+
+                    <button
+                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      onClick={() => handlePageClick(page + 1)}
+                      disabled={page === totalPages} // Disable the button if on the last page
+                    >
+                      <span className="sr-only">Next</span>
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </nav>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </Wrapper>
   );
