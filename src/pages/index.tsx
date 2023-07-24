@@ -302,8 +302,8 @@ export function OneStat({
 }) {
   return (
     <motion.div
-      initial={{ y: 10, opacity: 0.5 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ y: 10 }}
+      animate={{ y: 0}}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="bg-white relative rounded-xl p-4 shadow-md w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
@@ -311,7 +311,7 @@ export function OneStat({
         {icon}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 h-full justify-between">
         <h2 className="text-sm text-gray-500 font-medium">{title}</h2>
         <span
           title={value?.toString()}

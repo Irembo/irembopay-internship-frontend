@@ -149,8 +149,8 @@ function OneSidebar({
     >
       <Link
         href={link}
-        className={`flex items-center border-[1px] ease-in border-white/30 text-lg p-2 rounded-lg hover:bg-white hover:text-primary group hover:border-white transition duration-200 ${
-          isActive ? "bg-white text-primary" : "bg-transparent text-white"
+        className={`flex items-center border-[1px] ease-in border-white/30 text-lg p-2 rounded-lg hover:bg-white hover:text-primary group hover:border-white/10 transition duration-200 ${
+          isActive ? "bg-white/20 text-white" : "bg-transparent text-white"
         }`}
       >
         {icon}
