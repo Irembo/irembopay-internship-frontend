@@ -7,7 +7,7 @@ interface DailyTranscationsProps {
 }
 
 const SettledTranscations = ({ data }: DailyTranscationsProps) => {
-  return <AreaChart data={data} colorStop={"#0063CF"} unit="Rwf" />;
+  return <AreaChart data={data} colorStop={"#0063CF"} unit="Transactions" />;
 };
 
 export default SettledTranscations;
