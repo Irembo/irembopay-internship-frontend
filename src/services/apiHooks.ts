@@ -9,7 +9,7 @@ export const apiHooks = createApi({
   tagTypes: ["Dashboard", "Invoices", "Payouts"],
   endpoints: (builder) => ({
     getInvoices: builder.query({
-      query: (accountId, page = 1) => ({
+      query: ({accountId, page = 1}) => ({
         url: `payment-invoice?accountId=${accountId}&page=${page}`,
       }),
     }),
