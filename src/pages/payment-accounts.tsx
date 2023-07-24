@@ -122,28 +122,89 @@ export default function Transcations() {
     setPage(pageNumber);
   };
 
+  const scrollHorizontal = (dir: "left" | "right") => {
+    // scroll left or right smoothly
+    const container = document.getElementById("container");
+    if (container) {
+      if (dir === "left") {
+        container.scrollBy({
+          left: -100,
+          behavior: "smooth",
+        });
+      } else {
+        container.scrollBy({
+          left: 100,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   return (
     <Wrapper custom="flex flex-col">
       <Header title="Payment Accounts" />
-      <section className="bg-white rounded-lg mt-8 overflow-hidden w-full">
-        <nav className="flex space-x-0 w-full overflow-x-auto no-scrollbar bg-gray-100">
-          {data?.content?.map((account: PaymentAccount) => (
-            <button
-              key={account?.id}
-              type="button"
-              onClick={() => {
-                setActiveAccount(account);
-              }}
-              className={`py-3 px-4 inline-flex transition-colors ease-in duration-300 items-center font-medium text-sm border-r-[1px] border-b-[1px] text-center first:rounded-tl-lg last:rounded-t-lg whitespace-nowrap ${
-                activeAccount?.id === account?.id
-                  ? "text-primary rounded-t-lg bg-white border-r-gray-200 border-b-transparent"
-                  : "text-gray-600 bg-gray-100 border-r-transparent border-b-gray-200 hover:bg-gray-50"
-              }`}
+      <section className="bg-white rounded-lg mt-8 w-full">
+        <div className="w-full relative group">
+          <nav
+            id="container"
+            className="flex space-x-0 w-full overflow-x-auto no-scrollbar bg-gray-100"
+          >
+            {data?.content?.map((account: PaymentAccount) => (
+              <button
+                key={account?.id}
+                type="button"
+                onClick={() => {
+                  setActiveAccount(account);
+                }}
+                className={`py-3 px-4 inline-flex transition-colors ease-in duration-300 items-center font-medium text-sm border-r-[1px] border-b-[1px] text-center first:rounded-tl-lg last:rounded-t-lg whitespace-nowrap ${
+                  activeAccount?.id === account?.id
+                    ? "text-primary rounded-t-lg bg-white border-r-gray-200 border-b-transparent"
+                    : "text-gray-600 bg-gray-100 border-r-transparent border-b-gray-200 hover:bg-gray-50"
+                }`}
+              >
+                {account?.accountName}
+              </button>
+            ))}
+          </nav>
+          <div
+            onClick={() => scrollHorizontal("right")}
+            className="w-8 group-hover:visible invisible h-8 transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -right-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 text-primaryLight"
             >
-              {account?.accountName}
-            </button>
-          ))}
-        </nav>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </div>
+          <div
+            onClick={() => scrollHorizontal("left")}
+            className="w-8 h-8  group-hover:visible invisible transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -left-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 text-primaryLight rotate-180"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </div>
+        </div>
 
         <section className="w-full bg-white text-gray-600 p-4 my-6 rounded-2xl flex gap-2 px-8">
           <div className="flex flex-col w-[30%] gap-y-6">
