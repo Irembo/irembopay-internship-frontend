@@ -1,4 +1,5 @@
 import React from "react";
+import type { TooltipProps } from "recharts";
 import {
   Line,
   ComposedChart,
@@ -24,7 +25,22 @@ interface ChartProps {
 }
 
 export default function AreaChart({ colorStop, data, unit }: ChartProps) {
-  // const data = generateDummyData();
+  const renderTooltip = (
+    props: TooltipProps<string | number | (string | number)[], string | number>
+  ) => {
+    if (props.active && props.payload && props.payload.length) {
+      return (
+        <div className="bg-white shadow-md p-4 rounded-lg">
+          <p className="text-gray-500 text-xs">
+            {convertDate(props.payload[0]?.payload.date)}
+          </p>
+          <p className="text-gray-800 text-lg font-bold">
+            {props.payload[0]?.payload.value} {unit}
+          </p>
+        </div>
+      );
+    }
+  };
   return (
     <ResponsiveContainer className="bg-white my-4">
       <ComposedChart
@@ -52,7 +68,8 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
             fontSize: 10,
           }}
         />
-        <Tooltip />
+        {/* <Tooltip /> */}
+        <Tooltip content={(value) => renderTooltip(value)} />
         <CartesianGrid vertical={false} stroke="#ffffff" />
 
         <Line
