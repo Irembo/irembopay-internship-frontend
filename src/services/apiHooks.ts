@@ -9,7 +9,7 @@ export const apiHooks = createApi({
   tagTypes: ["Dashboard", "Invoices", "Payouts"],
   endpoints: (builder) => ({
     getInvoices: builder.query({
-      query: ({accountId, page = 1}) => ({
+      query: ({ accountId, page = 1 }) => ({
         url: `payment-invoice?accountId=${accountId}&page=${page}`,
       }),
     }),
@@ -29,13 +29,13 @@ export const apiHooks = createApi({
       }),
     }),
     getTranscationValueLast7Days: builder.query({
-      query: (accountId) => ({
-        url: `account-statistics/total-transaction-value-last-7-days/${accountId}`,
+      query: (accountNumber) => ({
+        url: `account-statistics/total-transaction-value-last-7-days/${accountNumber}`,
       }),
     }),
     getTranscationValueLast30Days: builder.query({
-      query: (accountId) => ({
-        url: `account-statistics/total-transaction-value-last-30-days/${accountId}`,
+      query: (accountNumber) => ({
+        url: `account-statistics/total-transaction-value-last-30-days/${accountNumber}`,
       }),
     }),
     averageTranscationValueDaily: builder.query({
@@ -46,6 +46,16 @@ export const apiHooks = createApi({
     getBalance: builder.query({
       query: (accountId) => ({
         url: `account-statistics/balance/${accountId}`,
+      }),
+    }),
+    getBalancePaymentAccount: builder.query({
+      query: ({ accountId, accountNumber }) => ({
+        url: `account-statistics/balance/payment-account/${accountId}/${accountNumber}`,
+      }),
+    }),
+    get30DaysTotalPaid: builder.query({
+      query: ({ accountId, accountNumber }) => ({
+        url: `account-statistics/total-paid-invoices-for-payment-account/${accountId}/${accountNumber}`,
       }),
     }),
     getProjectedBalance: builder.query({
@@ -84,4 +94,6 @@ export const {
   useGetDailyPaidInvoicesQuery,
   useGetDailySettledPayoutsQuery,
   useGetOneInvoiceQuery,
+  useGetBalancePaymentAccountQuery,
+  useGet30DaysTotalPaidQuery,
 } = apiHooks;

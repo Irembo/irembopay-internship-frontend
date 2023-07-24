@@ -136,7 +136,7 @@ function OneStage({
   );
 }
 
-function OneValue({ label, value }: { label: string; value: string }) {
+export function OneValue({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-2 items-center flex-row w-max">
       <p className="text-base font-semibold text-gray-500">{label}</p>

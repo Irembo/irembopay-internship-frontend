@@ -31,7 +31,7 @@ export default function Wrapper({
       ),
     },
     {
-      name: "Transcations",
+      name: "Transactions",
       link: "/transactions",
       icon: (
         <svg
@@ -109,7 +109,7 @@ export default function Wrapper({
           </ul>
         </div>
       </aside>
-      <div
+      <section
         className={`p-4 relative sm:ml-[17rem] pt-24 w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] ${custom}`}
       >
         <div className="absolute top-8 right-4 inset-x-0 flex justify-between w-auto px-4">
@@ -125,7 +125,7 @@ export default function Wrapper({
           </div>
         </div>
         {children}
-      </div>
+      </section>
     </main>
   );
 }

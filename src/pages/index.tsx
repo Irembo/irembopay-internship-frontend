@@ -136,7 +136,6 @@ export default function Home() {
     <>
       <Header />
       <Wrapper custom="flex flex-col justify-center min-h-screen gap-16 relative">
-
         <section className="w-full h-1/2 flex justify-center gap-8 -mt-8">
           {totalInvoices && (
             <OneStat
@@ -158,8 +157,9 @@ export default function Home() {
                   <rect width="7" height="4" x="7" y="13" rx="1" />
                 </svg>
               }
-              title="Total Paid Invoices"
+              title="Total Paid Invoices (30 Days)"
               value={totalInvoices}
+              ignoreZero
             />
           )}
           {loadingTotalInvoices && <IsLoadingOneStat />}
@@ -287,25 +287,27 @@ export default function Home() {
   );
 }
 
-function OneStat({
+export function OneStat({
   title,
   value,
   icon,
   projectedValue,
+  ignoreZero = false,
 }: {
   title: string;
   value: number;
   icon: React.ReactNode;
   projectedValue?: number;
+  ignoreZero?: boolean;
 }) {
   return (
     <motion.div
       initial={{ y: 10, opacity: 0.5 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-[300px] pr-0 items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
-      <div className="h-12 w-12 my-auto bg-primary/70 rounded-md flex justify-center items-center">
+      <div className="h-12 w-12 shrink-0 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}
       </div>
 
@@ -315,7 +317,7 @@ function OneStat({
           title={value?.toString()}
           className="text-3xl font-semibold tracking-tighter text-gray-600"
         >
-          {formatToK(value)}
+          {formatToK(value, ignoreZero)}
         </span>
         {projectedValue ? (
           <span className="text-sm text-gray-500 font-medium">
