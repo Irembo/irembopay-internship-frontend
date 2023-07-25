@@ -36,7 +36,7 @@ export function EmptyState({
     <tr className="px-4">
       <td
         colSpan={colSpan}
-        className="flex w-full whitespace-nowrap px-4 py-6 text-sm text-[#9D9D9D]"
+        className="flex w-full text-center whitespace-nowrap px-4 py-6 text-sm text-[#9D9D9D]"
       >
         {message}
       </td>

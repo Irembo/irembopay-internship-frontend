@@ -60,7 +60,7 @@ export default function Transcations() {
         <div className="mt-8">
           <div className="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="relative overflow-hidden rounded-lg bg-white px-0">
+              <div className="relative overflow-hidden rounded-lg bg-white px-2">
                 <table className="min-w-full divide-y divide-primaryLight">
                   <thead className="bg-[#f9fafb]">
                     <tr className="text-sm font-medium shadow text-[#000000]">
@@ -70,6 +70,7 @@ export default function Transcations() {
                       <th className="px-3 py-3.5 text-left">Amount</th>
                       <th className="px-3 py-3.5 text-left">Status</th>
                       <th className="px-3 py-3.5 text-left">Created</th>
+                      <th className="px-3 py-3.5 text-left">Action</th>
                     </tr>
                   </thead>
                   <tbody className="text-gray-500">
@@ -87,14 +88,14 @@ export default function Transcations() {
                               {token?.invoiceNumber}
                             </div>
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 border-b-[1px] border-gray-100 text-sm">
+                          <td className="whitespace-nowrap px-3 font-medium py-4 border-b-[1px] border-gray-100 text-sm">
                             {thousandSeparator(token?.amount)} {token?.currency}
                           </td>
                           <td
                             className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-xs lg:table-cell `}
                           >
                             <div
-                              className={`w-max h-max px-4 py-0.5 rounded-3xl ${getStatus(
+                              className={`w-max h-max px-4 py-1 rounded-3xl ${getStatus(
                                 token?.paymentStatus.toLowerCase()
                               )}`}
                             >
@@ -105,6 +106,15 @@ export default function Transcations() {
                             className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm lg:table-cell`}
                           >
                             {formatDate(token?.createdAt)}
+                          </td>
+                          <td
+                            className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm lg:table-cell`}
+                          >
+                            <div
+                              className={`w-max h-max px-8 hover:underline hover:bg-blue-200 py-1 rounded-3xl bg-blue-100 text-blue-900`}
+                            >
+                              View
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -119,124 +129,126 @@ export default function Transcations() {
                 </table>
               </div>
 
-              <nav
-                className="isolate inline-flex mt-8 -space-x-px rounded-md shadow-sm"
-                aria-label="Pagination"
-              >
-                <button
-                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                  onClick={() => handlePageClick(page - 1)}
-                  disabled={page === 1} // Disable the button if on the first page
+              {!isLoading && (
+                <nav
+                  className="isolate inline-flex mt-8 -space-x-px rounded-md shadow-sm"
+                  aria-label="Pagination"
                 >
-                  <span className="sr-only">Previous</span>
-                  <svg
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-
-                {/* Show first page always */}
-                {page === 1 && (
                   <button
-                    aria-current="page"
-                    className={`relative z-10 inline-flex items-center ${
-                      page === 1
-                        ? "bg-primary text-white" // Highlight the current page
-                        : "text-gray-400"
-                    } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
-                    onClick={() => handlePageClick(1)}
+                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                    onClick={() => handlePageClick(page - 1)}
+                    disabled={page === 1} // Disable the button if on the first page
                   >
-                    1
-                  </button>
-                )}
-
-                {range(
-                  Math.max(2, page - numPagesAfterDots),
-                  Math.min(totalPages - 1, page + numPagesAfterDots)
-                ).map((pg) => (
-                  <button
-                    key={pg}
-                    className={`relative inline-flex items-center ${
-                      pg === page
-                        ? "z-10 bg-primary text-white" // Highlight the current page
-                        : "text-gray-900"
-                    } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
-                    onClick={() => handlePageClick(pg)}
-                  >
-                    {pg}
-                  </button>
-                ))}
-                {/* Show ellipsis (...) and the last 3 pages */}
-                {totalPages > 3 && (
-                  <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-                    ...
-                  </span>
-                )}
-
-                {/* Show last 2 pages */}
-                {totalPages > 2 && (
-                  <>
-                    <button
-                      className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
-                        page === totalPages - 2
-                          ? "z-10 bg-primary text-white" // Highlight the current page
-                          : "text-gray-900"
-                      } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
-                      onClick={() => handlePageClick(totalPages - 1)}
+                    <span className="sr-only">Previous</span>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
                     >
-                      {totalPages - 2}
-                    </button>
+                      <path
+                        fill-rule="evenodd"
+                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Show first page always */}
+                  {page === 1 && (
                     <button
-                      className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
-                        page === totalPages - 1
-                          ? "z-10 bg-primary text-white" // Highlight the current page
-                          : "text-gray-900"
-                      } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
-                      onClick={() => handlePageClick(totalPages - 1)}
-                    >
-                      {totalPages - 1}
-                    </button>
-                    <button
-                      className={`relative inline-flex items-center rounded-r-md px-2 py-2 font-semibold text-sm text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                        page === totalPages
+                      aria-current="page"
+                      className={`relative z-10 inline-flex items-center ${
+                        page === 1
                           ? "bg-primary text-white" // Highlight the current page
-                          : "text-gray-900"
-                      }`}
-                      onClick={() => handlePageClick(totalPages)}
+                          : "text-gray-400"
+                      } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                      onClick={() => handlePageClick(1)}
                     >
-                      {totalPages}
+                      1
                     </button>
-                  </>
-                )}
+                  )}
 
-                <button
-                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                  onClick={() => handlePageClick(page + 1)}
-                  disabled={page === totalPages} // Disable the button if on the last page
-                >
-                  <span className="sr-only">Next</span>
-                  <svg
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
+                  {range(
+                    Math.max(2, page - numPagesAfterDots),
+                    Math.min(totalPages - 1, page + numPagesAfterDots)
+                  ).map((pg) => (
+                    <button
+                      key={pg}
+                      className={`relative inline-flex items-center ${
+                        pg === page
+                          ? "z-10 bg-primary text-white" // Highlight the current page
+                          : "text-gray-900"
+                      } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                      onClick={() => handlePageClick(pg)}
+                    >
+                      {pg}
+                    </button>
+                  ))}
+                  {/* Show ellipsis (...) and the last 3 pages */}
+                  {totalPages > 3 && (
+                    <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+                      ...
+                    </span>
+                  )}
+
+                  {/* Show last 2 pages */}
+                  {totalPages > 2 && (
+                    <>
+                      <button
+                        className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                          page === totalPages - 2
+                            ? "z-10 bg-primary text-white" // Highlight the current page
+                            : "text-gray-900"
+                        } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
+                        onClick={() => handlePageClick(totalPages - 1)}
+                      >
+                        {totalPages - 2}
+                      </button>
+                      <button
+                        className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                          page === totalPages - 1
+                            ? "z-10 bg-primary text-white" // Highlight the current page
+                            : "text-gray-900"
+                        } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
+                        onClick={() => handlePageClick(totalPages - 1)}
+                      >
+                        {totalPages - 1}
+                      </button>
+                      <button
+                        className={`relative inline-flex items-center rounded-r-md px-2 py-2 font-semibold text-sm text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+                          page === totalPages
+                            ? "bg-primary text-white" // Highlight the current page
+                            : "text-gray-900"
+                        }`}
+                        onClick={() => handlePageClick(totalPages)}
+                      >
+                        {totalPages}
+                      </button>
+                    </>
+                  )}
+
+                  <button
+                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                    onClick={() => handlePageClick(page + 1)}
+                    disabled={page === totalPages} // Disable the button if on the last page
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </nav>
+                    <span className="sr-only">Next</span>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+              )}
             </div>
           </div>
         </div>

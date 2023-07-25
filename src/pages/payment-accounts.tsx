@@ -363,7 +363,7 @@ export default function Transcations() {
                         ))}
                       {allPayouts?.content?.length === 0 && (
                         <EmptyState
-                          colSpan={4}
+                          colSpan={5}
                           message="No transactions available"
                         />
                       )}
