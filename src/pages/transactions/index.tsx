@@ -14,6 +14,7 @@ export interface InvoiceProps {
   createdAt: string;
   expiryAt: string;
   paymentStatus: string;
+  status: string;
 }
 
 export default function Transcations() {
@@ -96,10 +97,14 @@ export default function Transcations() {
                           >
                             <div
                               className={`w-max h-max px-4 py-1 rounded-3xl ${getStatus(
-                                token?.paymentStatus.toLowerCase()
+                                token?.status === "PENDING_APPROVAL"
+                                  ? "PENDING_APPROVAL".toLowerCase()
+                                  : token?.paymentStatus.toLowerCase()
                               )}`}
                             >
-                              {token?.paymentStatus}
+                              {token?.status === "PENDING_APPROVAL"
+                                ? "PENDING_APPROVAL"
+                                : token?.paymentStatus}
                             </div>
                           </td>
                           <td
@@ -264,6 +269,8 @@ export function getStatus(status: string) {
     return "bg-yellow-100 text-yellow-800";
   } else if (status === "settled") {
     return "bg-green-200 text-green-800";
+  } else if (status === "pending_approval") {
+    return "bg-blue-200 text-blue-800";
   } else {
     return "bg-gray-100 text-gray-800";
   }
