@@ -124,7 +124,7 @@ export default function Transcations() {
                         </tr>
                       ))}
                     {isLoading &&
-                      [...Array(5)].map((_, index) => (
+                      [...Array(15)].map((_, index) => (
                         <LoadingRow colSpan={4} key={index} />
                       ))}
                     {data?.content?.length === 0 && (
