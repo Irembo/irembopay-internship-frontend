@@ -334,7 +334,7 @@ export function OneStat({
   );
 }
 
-function IsLoadingOneStat() {
+export function IsLoadingOneStat() {
   return (
     <motion.div
       initial={{ y: 10, opacity: 0.5 }}
