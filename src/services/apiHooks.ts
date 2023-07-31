@@ -83,9 +83,9 @@ export const apiHooks = createApi({
         url: `payment-invoice/invoice-number?invoiceId=${id}`,
       }),
     }),
-    searchForTranscation: builder.query({
-      query: ({ accountId, search }) => ({
-        url: `payment-invoice/search/${accountId}?search=${search}`,
+    searchForTranscation: builder.mutation({
+      query: ({ accountId, invoiceNumber = null, status = null }) => ({
+        url: `payment-invoice/search/${accountId}?invoiceNumber=${invoiceNumber}&status=${status}`,
       }),
     }),
   }),
@@ -107,5 +107,5 @@ export const {
   useGetBalancePaymentAccountQuery,
   useGet30DaysTotalPaidQuery,
   useGetPaymentAccountPayoutsQuery,
-  useSearchForTranscationQuery,
+  useSearchForTranscationMutation,
 } = apiHooks;

@@ -135,7 +135,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Wrapper custom="flex flex-col justify-center min-h-screen gap-16 relative">
+      <Wrapper pageTitle="" custom="flex flex-col justify-center min-h-screen gap-16 relative">
         <section className="w-full h-1/2 flex justify-center gap-8 -mt-8">
           {totalInvoices && (
             <OneStat

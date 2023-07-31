@@ -276,3 +276,12 @@ table {
   transform: translateX(0) translateY(-50%);
   border-left-color: var(--tooltip-background-color);
 }
+
+.border-search {
+  border: 1px solid #E0E0E0;
+  transition: all 0.3s ease;
+}
+
+.border-search:focus {
+  border: 1px solid #0099E8;
+}

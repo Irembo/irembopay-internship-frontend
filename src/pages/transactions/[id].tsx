@@ -16,8 +16,8 @@ export default function InvoiceView() {
   });
 
   return (
-    <Wrapper custom="flex flex-col gap-8">
-      <Header title="Invoice View" />
+    <Wrapper pageTitle="Transactions View" custom="flex flex-col gap-8">
+      <Header title="Transactions View" />
       {isFetching || !data ? (
         <section className="animate-pulse bg-gray-200 w-full text-gray-600 h-[100px] p-4 mt-6 rounded-2xl flex gap-2 px-8 flex-col" />
       ) : (
@@ -76,7 +76,7 @@ export default function InvoiceView() {
               !!data?.settlementTransactionId ||
               data?.paymentStatus === "SETTLED"
             }
-            description="Payout has been scheduled for the transaction"
+            description="Payout has been scheduled"
           />
           {data?.accountType === "RRA_MERCHANT" && (
             <OneStage

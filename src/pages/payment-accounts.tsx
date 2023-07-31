@@ -141,7 +141,7 @@ export default function Transcations() {
   };
 
   return (
-    <Wrapper custom="flex flex-col">
+    <Wrapper pageTitle="Payment Accounts" custom="flex flex-col">
       <Header title="Payment Accounts" />
       <section className="bg-white rounded-lg mt-8 w-full">
         <div className="w-full relative group">

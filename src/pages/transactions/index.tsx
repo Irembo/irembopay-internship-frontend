@@ -1,9 +1,13 @@
 import { formatDate, thousandSeparator } from "@/lib/formatters";
-import { useGetInvoicesQuery } from "@/services/apiHooks";
-import React, { useEffect } from "react";
+import {
+  useGetInvoicesQuery,
+  useSearchForTranscationMutation,
+} from "@/services/apiHooks";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { EmptyState, LoadingRow } from "@/components/global/loading";
 import Wrapper from "@/components/global/wrapper";
+import { AnimatePresence, motion } from "framer-motion";
 import Header from "@/components/global/head";
 
 export interface InvoiceProps {
@@ -22,17 +26,22 @@ export default function Transcations() {
 
   const [page, setPage] = React.useState(1);
 
-  const { data, isLoading } = useGetInvoicesQuery({ accountId, page });
+  const { data, isLoading, refetch } = useGetInvoicesQuery({ accountId, page });
 
   const router = useRouter();
 
-  const totalPages = data?.totalPages;
+  const [totalPages, setTotalPages] = useState<number>(1);
+
+  const [allInvoices, setAllInvoices] = useState<InvoiceProps[]>([]);
 
   useEffect(() => {
-    if (data?.number) {
+    console.log(data);
+    if (data) {
       setPage(data?.number);
+      setTotalPages(data?.totalPages);
+      setAllInvoices(data?.content);
     }
-  }, [data?.number]);
+  }, [data]);
 
   // Helper function to generate an array of numbers from start to end
   const range = (start: number, end: number) => {
@@ -54,9 +63,90 @@ export default function Transcations() {
   // Number of pages to show after "..." (in this case, it's 3)
   const numPagesAfterDots = 2;
 
+  const [invoiceNumber, setInvoiceNumber] = useState<string>("");
+  const [status, setStatus] = useState<string | null>(null);
+
+  const [searchInvoices, { isLoading: searching }] =
+    useSearchForTranscationMutation();
+
+  const searchAction = async () => {
+    if (invoiceNumber?.length === 0 && !status) {
+      refetch();
+      return;
+    }
+    await searchInvoices({ accountId, invoiceNumber, status })
+      .unwrap()
+      .then((payload) => {
+        setPage(payload?.number);
+        setTotalPages(payload?.totalPages);
+        setAllInvoices(payload?.content);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <Wrapper>
-      <Header title="Transactions" />
+    <Wrapper pageTitle="Transcations">
+      <Header title="Transcations" />
+
+      <section className="rounded-lg bg-white p-4 gap-4 flex flex-col">
+        <h2 className="text-gray-600">Search your transcations</h2>
+        <div className="flex gap-16">
+          <form className="relative mb-6">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-hash text-[#E0E0E0]"
+              >
+                <line x1="4" x2="20" y1="9" y2="9" />
+                <line x1="4" x2="20" y1="15" y2="15" />
+                <line x1="10" x2="8" y1="3" y2="21" />
+                <line x1="16" x2="14" y1="3" y2="21" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              value={invoiceNumber as string}
+              onChange={(e) => {
+                setInvoiceNumber(e.target.value);
+                if (status) {
+                  setStatus(null);
+                }
+              }}
+              id="input-group-1"
+              className="bg-gray-50 border border-gray-400 border-search text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  "
+              placeholder="Invoice Number"
+            />
+          </form>
+          <Dropdown
+            selectStatus={(val: string) => {
+              setStatus(val);
+              if (invoiceNumber) {
+                setInvoiceNumber("");
+              }
+            }}
+          />
+          <button
+            disabled={isLoading || searching}
+            onClick={(e) => {
+              e.preventDefault();
+              searchAction();
+            }}
+            className="py-2.5 h-max w-max hover:bg-primary/90 transition-all ease-in duration-300 px-12 rounded-lg text-white font-semibold bg-primaryLight"
+          >
+            {searching ? "Searching..." : "Search"}
+          </button>
+        </div>
+      </section>
       <div className="w-auto">
         <div className="mt-8">
           <div className="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
@@ -76,7 +166,7 @@ export default function Transcations() {
                   </thead>
                   <tbody className="text-gray-500">
                     {!isLoading &&
-                      data?.content.map((token: InvoiceProps, i: number) => (
+                      allInvoices?.map((token: InvoiceProps, i: number) => (
                         <tr
                           key={i}
                           onClick={() =>
@@ -127,8 +217,11 @@ export default function Transcations() {
                       [...Array(15)].map((_, index) => (
                         <LoadingRow colSpan={4} key={index} />
                       ))}
-                    {data?.content?.length === 0 && (
-                      <EmptyState colSpan={4} message="No tokens available" />
+                    {allInvoices?.length === 0 && (
+                      <EmptyState
+                        colSpan={4}
+                        message="No transcations available"
+                      />
                     )}
                   </tbody>
                 </table>
@@ -139,25 +232,27 @@ export default function Transcations() {
                   className="isolate inline-flex mt-8 -space-x-px rounded-md shadow-sm"
                   aria-label="Pagination"
                 >
-                  <button
-                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                    onClick={() => handlePageClick(page - 1)}
-                    disabled={page === 1} // Disable the button if on the first page
-                  >
-                    <span className="sr-only">Previous</span>
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+                  {totalPages > 1 && (
+                    <button
+                      className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      onClick={() => handlePageClick(page - 1)}
+                      disabled={page === 1} // Disable the button if on the first page
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <span className="sr-only">Previous</span>
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  )}
 
                   {/* Show first page always */}
                   {page === 1 && (
@@ -233,25 +328,27 @@ export default function Transcations() {
                     </>
                   )}
 
-                  <button
-                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                    onClick={() => handlePageClick(page + 1)}
-                    disabled={page === totalPages} // Disable the button if on the last page
-                  >
-                    <span className="sr-only">Next</span>
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+                  {totalPages > 1 && (
+                    <button
+                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      onClick={() => handlePageClick(page + 1)}
+                      disabled={page === totalPages} // Disable the button if on the last page
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <span className="sr-only">Next</span>
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </nav>
               )}
             </div>
@@ -270,8 +367,106 @@ export function getStatus(status: string) {
   } else if (status === "settled") {
     return "bg-green-200 text-green-800";
   } else if (status === "pending_approval") {
-    return "bg-blue-200 text-blue-800";
+    return "bg-blue-200 text-blue-700";
   } else {
     return "bg-gray-100 text-gray-800";
   }
+}
+
+export function Dropdown({
+  selectStatus,
+}: {
+  selectStatus: (status: string) => void;
+}) {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [activeText, setActiveText] = useState("Choose status");
+  return (
+    <div className="relative inline-block text-left">
+      <div>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setShowDropdown(!showDropdown);
+          }}
+          className="inline-flex w-full justify-between transition-all ease-in duration-300 gap-x-4 rounded-md bg-white px-[2.5rem] py-2.5 text-base font-medium text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          {activeText}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="-mr-1 h-5 w-5 text-gray-400"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {showDropdown && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            exit={{ opacity: 0, scale: 0.9 }}
+          >
+            <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="py-0 rounded-md">
+                <p
+                  onClick={() => {
+                    selectStatus("PAID");
+                    setActiveText("PAID");
+                    setShowDropdown(false);
+                  }}
+                  className="hover:bg-gray-100 rounded-md"
+                >
+                  <span className={"  block px-4 py-2 text-sm"}>PAID</span>
+                </p>
+                <p
+                  onClick={() => {
+                    selectStatus("PAYOUT_INITIATED");
+                    setActiveText("PAYOUT INITIATED");
+                    setShowDropdown(false);
+                  }}
+                  className="hover:bg-gray-100 rounded-md"
+                >
+                  <span className={"  block px-4 py-2 text-sm"}>
+                    PAYOUT INITIATED
+                  </span>
+                </p>
+                <p
+                  onClick={() => {
+                    selectStatus("PENDING_APPROVAL");
+                    setActiveText("PENDING APPROVAL");
+                    setShowDropdown(false);
+                  }}
+                  className="hover:bg-gray-100 rounded-md"
+                >
+                  <span className={" block px-4 py-2 text-sm"}>
+                    PENDING APPROVAL
+                  </span>
+                </p>
+                <p
+                  onClick={() => {
+                    selectStatus("SETTLED");
+                    setActiveText("SETTLED");
+                    setShowDropdown(false);
+                  }}
+                  className="hover:bg-gray-100 rounded-md"
+                >
+                  <span className={"  block px-4 py-2 text-sm"}>SETTLED</span>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
