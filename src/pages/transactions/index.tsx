@@ -35,7 +35,6 @@ export default function Transcations() {
   const [allInvoices, setAllInvoices] = useState<InvoiceProps[]>([]);
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       setPage(data?.number);
       setTotalPages(data?.totalPages);
@@ -90,7 +89,7 @@ export default function Transcations() {
     <Wrapper pageTitle="Transcations">
       <Header title="Transcations" />
 
-      <section className="rounded-lg bg-white p-4 gap-4 flex flex-col">
+      <section className="rounded-lg bg-white p-4 gap-4 mt-8 flex flex-col">
         <h2 className="text-gray-600">Search your transcations</h2>
         <div className="flex gap-16">
           <form className="relative mb-6">
@@ -381,7 +380,7 @@ export function Dropdown({
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeText, setActiveText] = useState("Choose status");
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block w-[275px] text-left">
       <div>
         <button
           onClick={(e) => {
@@ -424,7 +423,7 @@ export function Dropdown({
                     setActiveText("PAID");
                     setShowDropdown(false);
                   }}
-                  className="hover:bg-gray-100 rounded-md"
+                  className="hover:bg-gray-100 cursor-pointer rounded-md"
                 >
                   <span className={"  block px-4 py-2 text-sm"}>PAID</span>
                 </p>
@@ -434,7 +433,7 @@ export function Dropdown({
                     setActiveText("PAYOUT INITIATED");
                     setShowDropdown(false);
                   }}
-                  className="hover:bg-gray-100 rounded-md"
+                  className="hover:bg-gray-100 cursor-pointer rounded-md"
                 >
                   <span className={"  block px-4 py-2 text-sm"}>
                     PAYOUT INITIATED
@@ -446,7 +445,7 @@ export function Dropdown({
                     setActiveText("PENDING APPROVAL");
                     setShowDropdown(false);
                   }}
-                  className="hover:bg-gray-100 rounded-md"
+                  className="hover:bg-gray-100 cursor-pointer rounded-md"
                 >
                   <span className={" block px-4 py-2 text-sm"}>
                     PENDING APPROVAL
@@ -458,7 +457,7 @@ export function Dropdown({
                     setActiveText("SETTLED");
                     setShowDropdown(false);
                   }}
-                  className="hover:bg-gray-100 rounded-md"
+                  className="hover:bg-gray-100 cursor-pointer rounded-md"
                 >
                   <span className={"  block px-4 py-2 text-sm"}>SETTLED</span>
                 </p>
