@@ -19,7 +19,7 @@ export const apiHooks = createApi({
       }),
     }),
     getPaymentAccountPayouts: builder.query({
-      query: ({ accountNumber, page = 1}) => ({
+      query: ({ accountNumber, page = 1 }) => ({
         url: `settlement-transaction/${accountNumber}?page=${page}`,
       }),
     }),
@@ -83,6 +83,11 @@ export const apiHooks = createApi({
         url: `payment-invoice/invoice-number?invoiceId=${id}`,
       }),
     }),
+    searchForTranscation: builder.query({
+      query: ({ accountId, search }) => ({
+        url: `payment-invoice/search/${accountId}?search=${search}`,
+      }),
+    }),
   }),
 });
 
@@ -101,5 +106,6 @@ export const {
   useGetOneInvoiceQuery,
   useGetBalancePaymentAccountQuery,
   useGet30DaysTotalPaidQuery,
-  useGetPaymentAccountPayoutsQuery
+  useGetPaymentAccountPayoutsQuery,
+  useSearchForTranscationQuery,
 } = apiHooks;
