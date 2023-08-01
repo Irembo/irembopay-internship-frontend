@@ -29,7 +29,7 @@ git clone https://github.com/Irembo/irembopay-internship-frontend.git
 pnpm install
 ```
 
-3. Create a `.env` file in the root directory and request for the environment variables from the owner of the repository.
+3. Create a `.env` file in the root directory and request for the environment variables from the owner of the repository
 
 4. Run the development server
 
