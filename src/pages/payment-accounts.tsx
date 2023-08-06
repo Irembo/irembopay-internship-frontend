@@ -223,6 +223,23 @@ export default function Transcations() {
               <OneValue
                 label="Account Name"
                 value={activeAccount?.accountName as string}
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-credit-card text-primaryLight"
+                  >
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <line x1="2" x2="22" y1="10" y2="10" />
+                  </svg>
+                }
               />
             )}
             {isFetching ? (
@@ -231,6 +248,25 @@ export default function Transcations() {
               <OneValue
                 label="Type"
                 value={`${activeAccount?.type as string}`}
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-gantt-chart-square text-primaryLight"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" />
+                    <path d="M9 8h7" />
+                    <path d="M8 12h6" />
+                    <path d="M11 16h5" />
+                  </svg>
+                }
               />
             )}
             {isFetching ? (
@@ -239,6 +275,24 @@ export default function Transcations() {
               <OneValue
                 label="Currency"
                 value={activeAccount?.currency as string}
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-banknote text-primaryLight"
+                  >
+                    <rect width="20" height="12" x="2" y="6" rx="2" />
+                    <circle cx="12" cy="12" r="2" />
+                    <path d="M6 12h.01M18 12h.01" />
+                  </svg>
+                }
               />
             )}
           </div>
