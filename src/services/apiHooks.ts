@@ -68,6 +68,11 @@ export const apiHooks = createApi({
         url: `account-statistics/projected-balance/${accountId}`,
       }),
     }),
+    getStatusGrouped: builder.query({
+      query: (accountId) => ({
+        url: `account-statistics/payment-status/${accountId}`,
+      }),
+    }),
     getDailyPaidInvoices: builder.query({
       query: ({ accountId, activeCycleInvoices = 100 }) => ({
         url: `account-statistics/total-transcations/${accountId}/${activeCycleInvoices}`,
@@ -108,4 +113,5 @@ export const {
   useGet30DaysTotalPaidQuery,
   useGetPaymentAccountPayoutsQuery,
   useSearchForTranscationMutation,
+  useGetStatusGroupedQuery,
 } = apiHooks;

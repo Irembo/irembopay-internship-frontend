@@ -28,7 +28,7 @@ const RadianTooltip = (props: any) => {
   const textAnchor = cos >= 0 ? "start" : "end";
 
   return (
-    <g>
+    <g className="">
       <Sector
         cx={cx}
         cy={cy}

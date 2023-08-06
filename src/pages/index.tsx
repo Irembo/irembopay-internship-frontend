@@ -9,6 +9,7 @@ import {
   useGetDailyPaidInvoicesQuery,
   useGetDailySettledPayoutsQuery,
   useGetProjectedBalanceQuery,
+  useGetStatusGroupedQuery,
   useGetTotalPaidInvoicesQuery,
 } from "@/services/apiHooks";
 import { useState } from "react";
@@ -133,6 +134,12 @@ export default function Home() {
       { refetchOnMountOrArgChange: true }
     );
 
+  const { data: grouped } = useGetStatusGroupedQuery(accountId, {
+    skip: !accountId,
+  });
+
+  console.log(grouped);
+
   const data = [
     { name: "Group A", value: 400 },
     { name: "Group B", value: 300 },
@@ -187,7 +194,7 @@ export default function Home() {
                 <Loading />
               </div>
             ) : (
-              <DonutChart data={data} colors={COLORS} />
+              <DonutChart data={grouped} colors={COLORS} />
             )}
           </div>
 
