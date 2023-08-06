@@ -1,4 +1,3 @@
-import DailyTranscations from "@/components/dashboard/charts/dailyTranscations";
 import SettledTranscations from "@/components/dashboard/charts/settledTranscations";
 import Header from "@/components/global/head";
 import Loading from "@/components/global/loading";
@@ -6,11 +5,9 @@ import Wrapper from "@/components/global/wrapper";
 import { formatToK } from "@/lib/formatters";
 import {
   useGetBalanceQuery,
-  useGetDailyPaidInvoicesQuery,
   useGetDailySettledPayoutsQuery,
   useGetProjectedBalanceQuery,
   useGetStatusGroupedQuery,
-  useGetTotalPaidInvoicesQuery,
 } from "@/services/apiHooks";
 import { useState } from "react";
 
@@ -19,8 +16,6 @@ import DonutChart from "@/components/dashboard/donut/chart";
 
 export default function Home() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
-  const { data: totalInvoices, isLoading: loadingTotalInvoices } =
-    useGetTotalPaidInvoicesQuery(accountId);
 
   const { data: balances, isLoading: loadingBalances } =
     useGetBalanceQuery(accountId);
@@ -112,19 +107,8 @@ export default function Home() {
     }
   };
 
-  const [activeCycleInvoices, setActiveCycleInvoices] = useState(30);
   const [activeCyclePayouts, setActiveCyclePayouts] = useState(30);
 
-  const { data: dailyPaid, isFetching: fetchingInvoices } =
-    useGetDailyPaidInvoicesQuery(
-      {
-        accountId,
-        activeCycleInvoices,
-      },
-      {
-        refetchOnMountOrArgChange: true,
-      }
-    );
   const { data: dailySettled, isFetching: fetchingPayouts } =
     useGetDailySettledPayoutsQuery(
       {
@@ -134,18 +118,9 @@ export default function Home() {
       { refetchOnMountOrArgChange: true }
     );
 
-  const { data: grouped } = useGetStatusGroupedQuery(accountId, {
+  const { data: grouped, isFetching } = useGetStatusGroupedQuery(accountId, {
     skip: !accountId,
   });
-
-  console.log(grouped);
-
-  const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -154,9 +129,9 @@ export default function Home() {
       <Header />
       <Wrapper
         pageTitle=""
-        custom="flex flex-col justify-center min-h-screen gap-16 relative"
+        custom="flex flex-col justify-center pt-[10rem] pb-16 h-auto min-h-screen gap-16 relative"
       >
-        <section className="w-full h-1/2 flex justify-center gap-8 -mt-8">
+        <section className="w-full h-1/2 flex justify-center flex-wrap gap-8 -mt-8">
           {balances &&
             balances?.map(
               (
@@ -184,12 +159,12 @@ export default function Home() {
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
         </section>
 
-        <section className="w-full gap-8 h-[400px] flex">
-          <div className="flex w-1/2 flex-col">
+        <section className="w-full gap-8 xl:flex-row flex-col xl:h-[400px] flex">
+          <div className="flex xl:w-1/2 w-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Paid Transcations
             </h2>
-            {fetchingInvoices ? (
+            {isFetching ? (
               <div className="w-full h-[400px] flex justify-center items-center">
                 <Loading />
               </div>
@@ -198,7 +173,7 @@ export default function Home() {
             )}
           </div>
 
-          <div className="flex w-1/2 flex-col">
+          <div className="flex xl:w-1/2 w-full h-[400px] flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Settled Transcations
             </h2>
@@ -266,7 +241,7 @@ export function OneStat({
       initial={{ y: 10 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-[325px] pr-2 items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-[325px] min-w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
       <div className="h-12 w-12 shrink-0 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}

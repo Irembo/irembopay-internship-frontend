@@ -42,7 +42,7 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
     }
   };
   return (
-    <ResponsiveContainer className="bg-white my-4">
+    <ResponsiveContainer className="bg-white w-full my-4">
       <ComposedChart
         width={400}
         height={300}

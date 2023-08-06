@@ -94,8 +94,15 @@ export default function Wrapper({
               <Link href="/" className="flex ml-2 md:mr-24">
                 <Image
                   src="/logo.png"
-                  className="object-contain"
+                  className="object-contain lg:block hidden"
                   width={250}
+                  height={50}
+                  alt="Logo"
+                />
+                <Image
+                  src="/favicon.ico"
+                  className="object-contain block lg:hidden"
+                  width={50}
                   height={50}
                   alt="Logo"
                 />
@@ -118,7 +125,9 @@ export default function Wrapper({
           <h1 className="text-gray-800 font-bold text-2xl">{pageTitle}</h1>
           <div className="flex gap-4">
             <div className="flex flex-col gap-0">
-              <p className="text-xl font-semibold text-gray-800">Liplan Lekipising</p>
+              <p className="text-xl font-semibold text-gray-800">
+                Liplan Lekipising
+              </p>
               <span className="text-gray-500 text-base font-medium">
                 l.lekipising@irembo.com
               </span>

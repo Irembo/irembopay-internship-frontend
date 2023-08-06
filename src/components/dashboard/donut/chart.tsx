@@ -12,15 +12,13 @@ const DonutChart = ({ data, colors }) => {
   };
 
   return (
-    <ResponsiveContainer height={300} width="100%" className="bg-white my-4">
+    <ResponsiveContainer height={300} width="100%" className="bg-white my-4 w-full h-full flex justify-center items-center">
       <PieChart>
         <Pie
           activeIndex={activeIndex}
           labelLine={false}
           label={RadianTooltip}
           data={data}
-          cx={350}
-          cy={150}
           innerRadius={50}
           outerRadius={80}
           fill="#8884d8"
