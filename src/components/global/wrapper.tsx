@@ -118,12 +118,12 @@ export default function Wrapper({
           <h1 className="text-gray-800 font-bold text-2xl">{pageTitle}</h1>
           <div className="flex gap-4">
             <div className="flex flex-col gap-0">
-              <p className="text-xl font-semibold text-gray-800">Jane Doe</p>
+              <p className="text-xl font-semibold text-gray-800">Liplan Lekipising</p>
               <span className="text-gray-500 text-base font-medium">
-                jane.doe@hello.com
+                l.lekipising@irembo.com
               </span>
             </div>
-            <CreateAvatar seed="Jane Doe" />
+            <CreateAvatar seed="Liplan Lekipising" />
           </div>
         </div>
         {children}
