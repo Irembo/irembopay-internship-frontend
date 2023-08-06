@@ -21,7 +21,7 @@ export default function Wrapper({
       link: "/",
       icon: (
         <svg
-          className="w-6 h-6 transition ease-in duration-200 group-hover:text-primary"
+          className="md:w-6 md:h-6 h-8 w-8 transition ease-in duration-200 md:group-hover:text-primary"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -46,7 +46,7 @@ export default function Wrapper({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          className="w-6 h-6 transition ease-in duration-200 group-hover:text-primary"
+          className="md:w-6 md:h-6 h-8 w-8 transition ease-in duration-200 md:group-hover:text-primary"
         >
           <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
           <path d="M18 14h-8" />
@@ -69,7 +69,7 @@ export default function Wrapper({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          className="w-6 h-6 transition ease-in duration-200 group-hover:text-primary"
+          className="md:w-6 md:h-6 h-8 w-8 transition ease-in duration-200 md:group-hover:text-primary"
         >
           <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
           <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
@@ -85,13 +85,13 @@ export default function Wrapper({
     <main className="">
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-4 transition-transform -translate-x-full bg-primaryLight border-r border-gray-200 sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 md:w-64 w-20 h-screen pt-4 transition-transform -translate-x-full bg-primaryLight border-r border-gray-200 sm:translate-x-0"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto bg-primaryLight ">
           <ul className="space-y-6 font-medium">
             <li>
-              <Link href="/" className="flex ml-2 md:mr-24">
+              <Link href="/" className="flex md:ml-2 md:mr-24">
                 <Image
                   src="/logo.png"
                   className="object-contain lg:block hidden"
@@ -119,11 +119,13 @@ export default function Wrapper({
         </div>
       </aside>
       <section
-        className={`p-4 relative sm:ml-[17rem] pt-24 w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] ${custom}`}
+        className={`p-4 relative ml-20 md:ml-[17rem] pt-24 md:w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] overflow-hidden ${custom}`}
       >
-        <div className="absolute top-8 right-4 inset-x-0 flex justify-between w-auto px-4">
-          <h1 className="text-gray-800 font-bold text-2xl">{pageTitle}</h1>
-          <div className="flex gap-4">
+        <div className="absolute top-8 right-4 inset-x-0 flex md:justify-between w-auto px-4 justify-end">
+          <h1 className="text-gray-800 font-bold text-2xl md:block hidden">
+            {pageTitle}
+          </h1>
+          <div className="flex gap-4 self-end">
             <div className="flex flex-col gap-0">
               <p className="text-xl font-semibold text-gray-800">
                 Liplan Lekipising
@@ -160,12 +162,12 @@ function OneSidebar({
     >
       <Link
         href={link}
-        className={`flex items-center border-[1px] ease-in border-white/30 text-lg p-2 rounded-lg hover:bg-white hover:text-primary group hover:border-white/10 transition duration-200 ${
-          isActive ? "bg-white/20 text-white" : "bg-transparent text-white"
+        className={`flex items-center md:border-[1px] ease-in md:border-white/30 text-lg p-2 rounded-lg md:hover:bg-white md:hover:text-primary group md:hover:border-white/10 transition duration-200 ${
+          isActive ? "md:bg-white/20 text-white" : "bg-transparent text-white"
         }`}
       >
         {icon}
-        <span className="ml-3">{name}</span>
+        <span className="ml-3 md:block hidden">{name}</span>
       </Link>
     </motion.li>
   );

@@ -95,50 +95,53 @@ export default function Transcations() {
 
       <section className="rounded-lg bg-white p-4 gap-4 mt-8 flex flex-col">
         <h2 className="text-gray-600">Search your transcations</h2>
-        <div className="flex gap-16">
-          <form className="relative mb-6">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-hash text-[#E0E0E0]"
-              >
-                <line x1="4" x2="20" y1="9" y2="9" />
-                <line x1="4" x2="20" y1="15" y2="15" />
-                <line x1="10" x2="8" y1="3" y2="21" />
-                <line x1="16" x2="14" y1="3" y2="21" />
-              </svg>
-            </div>
-            <input
-              type="text"
-              value={invoiceNumber as string}
-              onChange={(e) => {
-                setInvoiceNumber(e.target.value);
-                if (status) {
-                  setStatus(null);
+        <div className="flex xl:gap-16 gap-8 xl:justify-start justify-between xl:flex-row lg:flex-col flex-row">
+          <div className="flex xl:gap-16 gap-8 flex-row">
+            <form className="relative mb-6">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-hash text-[#E0E0E0]"
+                >
+                  <line x1="4" x2="20" y1="9" y2="9" />
+                  <line x1="4" x2="20" y1="15" y2="15" />
+                  <line x1="10" x2="8" y1="3" y2="21" />
+                  <line x1="16" x2="14" y1="3" y2="21" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={invoiceNumber as string}
+                onChange={(e) => {
+                  setInvoiceNumber(e.target.value);
+                  if (status) {
+                    setStatus(null);
+                  }
+                }}
+                id="input-group-1"
+                className="bg-gray-50 border border-gray-400 border-search text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  "
+                placeholder="Invoice Number"
+              />
+            </form>
+
+            <Dropdown
+              selectStatus={(val: string) => {
+                setStatus(val);
+                if (invoiceNumber) {
+                  setInvoiceNumber("");
                 }
               }}
-              id="input-group-1"
-              className="bg-gray-50 border border-gray-400 border-search text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  "
-              placeholder="Invoice Number"
             />
-          </form>
+          </div>
 
-          <Dropdown
-            selectStatus={(val: string) => {
-              setStatus(val);
-              if (invoiceNumber) {
-                setInvoiceNumber("");
-              }
-            }}
-          />
           <button
             disabled={isLoading || searching}
             onClick={(e) => {
@@ -163,8 +166,12 @@ export default function Transcations() {
                         Invoice
                       </th>
                       <th className="px-3 py-3.5 text-left">Amount</th>
-                      <th className="px-3 py-3.5 text-left">Status</th>
-                      <th className="px-3 py-3.5 text-left">Created</th>
+                      <th className="px-3 py-3.5 text-left lg:table-cell hidden">
+                        Status
+                      </th>
+                      <th className="px-3 py-3.5 text-left xl:table-cell hidden">
+                        Created
+                      </th>
                       <th className="px-3 py-3.5 text-left">Action</th>
                     </tr>
                   </thead>
@@ -187,7 +194,7 @@ export default function Transcations() {
                             {thousandSeparator(token?.amount)} {token?.currency}
                           </td>
                           <td
-                            className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-xs lg:table-cell `}
+                            className={`whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-xs lg:table-cell hidden `}
                           >
                             <div
                               className={`w-max h-max px-4 py-1 rounded-3xl ${getStatus(
@@ -202,12 +209,12 @@ export default function Transcations() {
                             </div>
                           </td>
                           <td
-                            className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm lg:table-cell`}
+                            className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm xl:table-cell`}
                           >
                             {formatDate(token?.createdAt)}
                           </td>
                           <td
-                            className={`hidden whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm lg:table-cell`}
+                            className={`whitespace-nowrap px-3 border-b-[1px] border-gray-100 py-4 text-sm`}
                           >
                             <div
                               className={`w-max h-max px-8 hover:underline hover:bg-blue-200 py-1 rounded-3xl bg-blue-100 text-blue-900`}
@@ -390,7 +397,10 @@ export function Dropdown({
   useOnClickOutside(ref, () => setShowDropdown(false));
 
   return (
-    <div ref={ref} className="relative inline-block w-[275px] text-left">
+    <div
+      ref={ref}
+      className="relative hidden lg:inline-block w-[275px] text-left"
+    >
       <div>
         <button
           onClick={(e) => {
