@@ -84,7 +84,7 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
           legendType="none"
           strokeLinejoin="miter"
           animationBegin={0}
-          animationDuration={1000}
+          animationDuration={3000}
         />
         <Area
           type="linear"
@@ -96,7 +96,7 @@ export default function AreaChart({ colorStop, data, unit }: ChartProps) {
           fillOpacity={1}
           fill={`url(${`#colorUv` + colorStop})`}
           animationBegin={0}
-          animationDuration={1000}
+          animationDuration={3000}
         />
       </ComposedChart>
     </ResponsiveContainer>

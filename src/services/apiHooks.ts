@@ -20,7 +20,7 @@ export const apiHooks = createApi({
     }),
     getPaymentAccountPayouts: builder.query({
       query: ({ accountNumber, page = 1 }) => ({
-        url: `settlement-transaction/${accountNumber}?page=${page}`,
+        url: `settlement-transaction/destination-account?destinationAccountId=${accountNumber}&page=${page}`,
       }),
     }),
     getPaymentAccounts: builder.query({
@@ -30,57 +30,57 @@ export const apiHooks = createApi({
     }),
     getTotalPaidInvoices: builder.query({
       query: (accountId) => ({
-        url: `account-statistics/total-paid-invoices/${accountId}`,
+        url: `account-statistics/total-paid-invoices?accountId=${accountId}`,
       }),
     }),
     getTranscationValueLast7Days: builder.query({
       query: (accountNumber) => ({
-        url: `account-statistics/total-transaction-value-last-7-days/${accountNumber}`,
+        url: `account-statistics/total-transaction-value-last-7-days?accountNumber=${accountNumber}`,
       }),
     }),
     getTranscationValueLast30Days: builder.query({
       query: (accountNumber) => ({
-        url: `account-statistics/total-transaction-value-last-30-days/${accountNumber}`,
+        url: `account-statistics/total-transaction-value-last-30-days?accountNumber=${accountNumber}`,
       }),
     }),
     averageTranscationValueDaily: builder.query({
       query: (accountId) => ({
-        url: `account-statistics/average-daily-transaction-value/${accountId}`,
+        url: `account-statistics/average-daily-transaction-value?accountId=${accountId}`,
       }),
     }),
     getBalance: builder.query({
       query: (accountId) => ({
-        url: `account-statistics/balance/${accountId}`,
+        url: `account-statistics/balance?accountId=${accountId}`,
       }),
     }),
     getBalancePaymentAccount: builder.query({
       query: ({ accountId, accountNumber }) => ({
-        url: `account-statistics/balance/payment-account/${accountId}/${accountNumber}`,
+        url: `account-statistics/balance/payment-account?accountId=${accountId}&accountNumber=${accountNumber}`,
       }),
     }),
     get30DaysTotalPaid: builder.query({
       query: ({ accountId, accountNumber }) => ({
-        url: `account-statistics/total-paid-invoices-for-payment-account/${accountId}/${accountNumber}`,
+        url: `account-statistics/total-paid-invoices-for-payment-account?accountId=${accountId}&accountNumber=${accountNumber}`,
       }),
     }),
     getProjectedBalance: builder.query({
       query: (accountId) => ({
-        url: `account-statistics/projected-balance/${accountId}`,
+        url: `account-statistics/projected-balance?accountId=${accountId}`,
       }),
     }),
     getStatusGrouped: builder.query({
       query: (accountId) => ({
-        url: `account-statistics/payment-status/${accountId}`,
+        url: `account-statistics/payment-status?accountId=${accountId}`,
       }),
     }),
     getDailyPaidInvoices: builder.query({
       query: ({ accountId, activeCycleInvoices = 100 }) => ({
-        url: `account-statistics/total-transcations/${accountId}/${activeCycleInvoices}`,
+        url: `account-statistics/total-transcations?accountId=${accountId}&cycle=${activeCycleInvoices}`,
       }),
     }),
     getDailySettledPayouts: builder.query({
       query: ({ accountId, activeCyclePayouts = 100 }) => ({
-        url: `account-statistics/total-settled-transcations/${accountId}/${activeCyclePayouts}`,
+        url: `account-statistics/total-settled-transcations?accountId=${accountId}&cycle=${activeCyclePayouts}`,
       }),
     }),
     getOneInvoice: builder.query({

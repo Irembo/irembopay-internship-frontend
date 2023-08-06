@@ -9,18 +9,25 @@ import {
   useGetProjectedBalanceQuery,
   useGetStatusGroupedQuery,
 } from "@/services/apiHooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 import DonutChart from "@/components/dashboard/donut/chart";
 
 export default function Home() {
+  // const accountId = "9f6d595a-85fa-4527-847d-8c985e7dd405";
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
 
-  const { data: balances, isLoading: loadingBalances } =
-    useGetBalanceQuery(accountId);
+  const { data: balances, isLoading: loadingBalances } = useGetBalanceQuery(
+    accountId,
+    {
+      skip: !accountId,
+    }
+  );
 
-  const { data: projectedBalances } = useGetProjectedBalanceQuery(accountId);
+  const { data: projectedBalances } = useGetProjectedBalanceQuery(accountId, {
+    skip: !accountId,
+  });
 
   const getCurrencyIcon = (currency: string) => {
     switch (currency) {
@@ -33,9 +40,9 @@ export default function Home() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <circle cx="12" cy="12" r="10" />
@@ -52,9 +59,9 @@ export default function Home() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <rect width="20" height="12" x="2" y="6" rx="2" />
@@ -71,9 +78,9 @@ export default function Home() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <path d="M4 10h12" />
@@ -90,9 +97,9 @@ export default function Home() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-bar-chart-horizontal-big  text-white"
           >
             <path d="M18 7c0-5.333-8-5.333-8 0" />
@@ -107,7 +114,7 @@ export default function Home() {
     }
   };
 
-  const [activeCyclePayouts, setActiveCyclePayouts] = useState(30);
+  const [activeCyclePayouts, setActiveCyclePayouts] = useState(365);
 
   const { data: dailySettled, isFetching: fetchingPayouts } =
     useGetDailySettledPayoutsQuery(
@@ -115,7 +122,7 @@ export default function Home() {
         accountId,
         activeCyclePayouts,
       },
-      { refetchOnMountOrArgChange: true }
+      { refetchOnMountOrArgChange: true, skip: !accountId }
     );
 
   const { data: grouped, isFetching } = useGetStatusGroupedQuery(accountId, {
@@ -123,6 +130,14 @@ export default function Home() {
   });
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
 
   return (
     <>
@@ -156,7 +171,10 @@ export default function Home() {
               )
             )}
 
-          {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
+          {loadingBalances &&
+            Array(4)
+              .fill(0)
+              .map((_, index) => <IsLoadingOneStat key={index} />)}
         </section>
 
         <section className="w-full gap-8 xl:flex-row flex-col h-[800px] xl:h-[60vh] flex">
@@ -164,7 +182,7 @@ export default function Home() {
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Paid Transcations
             </h2>
-            {isFetching ? (
+            {isFetching || !grouped ? (
               <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>
@@ -177,7 +195,7 @@ export default function Home() {
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Settled Transcations
             </h2>
-            {fetchingPayouts ? (
+            {fetchingPayouts || !dailySettled ? (
               <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>

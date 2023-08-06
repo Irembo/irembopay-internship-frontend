@@ -38,9 +38,12 @@ export interface PayoutProps {
 }
 
 export default function Transcations() {
+  // const accountId = "9f6d595a-85fa-4527-847d-8c985e7dd405";
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
 
-  const { data, isFetching } = useGetPaymentAccountsQuery(accountId);
+  const { data, isFetching } = useGetPaymentAccountsQuery(accountId, {
+    skip: !accountId,
+  });
 
   const [activeAccount, setActiveAccount] = useState<PaymentAccount>();
 
@@ -219,6 +222,8 @@ export default function Transcations() {
           <div className="flex flex-col xl:w-[30%] w-full gap-y-6">
             {isFetching ? (
               <div className="animate-pulse min-w-[200px] w-[200px] bg-gray-300 py-5 px-4 rounded-lg" />
+            ) : data?.content?.length === 0 ? (
+              ""
             ) : (
               <OneValue
                 label="Account Name"
@@ -231,9 +236,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-credit-card text-primaryLight"
                   >
                     <rect width="20" height="14" x="2" y="5" rx="2" />
@@ -244,6 +249,8 @@ export default function Transcations() {
             )}
             {isFetching ? (
               <div className="animate-pulse min-w-[200px] w-[200px] bg-gray-300 py-5 px-4 rounded-lg" />
+            ) : data?.content?.length === 0 ? (
+              ""
             ) : (
               <OneValue
                 label="Type"
@@ -256,9 +263,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-gantt-chart-square text-primaryLight"
                   >
                     <rect width="18" height="18" x="3" y="3" rx="2" />
@@ -271,6 +278,8 @@ export default function Transcations() {
             )}
             {isFetching ? (
               <div className="animate-pulse min-w-[200px] w-[200px] bg-gray-300 py-5 px-4 rounded-lg" />
+            ) : data?.content?.length === 0 ? (
+              ""
             ) : (
               <OneValue
                 label="Currency"
@@ -283,9 +292,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-banknote text-primaryLight"
                   >
                     <rect width="20" height="12" x="2" y="6" rx="2" />
@@ -310,9 +319,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-bar-chart-horizontal-big  text-white"
                   >
                     <path d="M3 3v18h18" />
@@ -336,9 +345,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-bar-chart-horizontal-big  text-white"
                   >
                     <path d="M3 3v18h18" />
@@ -361,9 +370,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-bar-chart-horizontal-big  text-white"
                   >
                     <path d="M3 3v18h18" />
@@ -386,9 +395,9 @@ export default function Transcations() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-bar-chart-horizontal-big  text-white"
                   >
                     <path d="M3 3v18h18" />
@@ -399,6 +408,12 @@ export default function Transcations() {
               />
             )}
           </div>
+
+          {data?.content?.length === 0 && (
+            <p className="flex w-full text-center whitespace-nowrap px-4 py-6 text-sm text-[#9D9D9D]">
+              No payment accounts found
+            </p>
+          )}
         </section>
 
         <div className="w-auto">
@@ -457,7 +472,7 @@ export default function Transcations() {
                         ))}
                       {allPayouts?.content?.length === 0 && (
                         <EmptyState
-                          colSpan={5}
+                          colSpan={4}
                           message="No transactions available"
                         />
                       )}
@@ -483,9 +498,9 @@ export default function Transcations() {
                         aria-hidden="true"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </button>
@@ -574,9 +589,9 @@ export default function Transcations() {
                         aria-hidden="true"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </button>

@@ -34,9 +34,9 @@ const DonutChart = ({ data, colors }) => {
           outerRadius={isMobile ? 50 : 110}
           fill="#8884d8"
           paddingAngle={3}
-          isAnimationActive={true}
+          isAnimationActive
           animationBegin={0}
-          animationDuration={1000}
+          animationDuration={3000}
           onMouseEnter={onPieEnter}
         >
           {data.map((entry, index) => (

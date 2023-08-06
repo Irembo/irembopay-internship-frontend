@@ -61,9 +61,9 @@ export default function InvoiceView() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-wallet text-primaryLight"
                 >
                   <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
@@ -83,9 +83,9 @@ export default function InvoiceView() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-briefcase text-primaryLight"
                 >
                   <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
@@ -104,9 +104,9 @@ export default function InvoiceView() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-fingerprint text-primaryLight"
                 >
                   <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4" />
@@ -132,9 +132,9 @@ export default function InvoiceView() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-calendar-clock text-primaryLight"
                 >
                   <path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" />
@@ -238,9 +238,9 @@ function OneStage({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-info"
             >
               <circle cx="12" cy="12" r="10" />
@@ -274,9 +274,9 @@ function OneStage({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-check-check"
             >
               <path d="M18 6 7 17l-5-5" />
@@ -290,9 +290,9 @@ function OneStage({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-loader-2"
             >
               <path d="M21 12a9 9 0 1 1-6.219-8.56" />
