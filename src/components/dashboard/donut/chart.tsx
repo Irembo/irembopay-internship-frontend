@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import RadianTooltip from "./radianTooltip";
 
@@ -11,18 +11,32 @@ const DonutChart = ({ data, colors }) => {
     setActiveIndex(index);
   };
 
+  const [isMobile, setIsMobile] = useState(null);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, [isMobile]);
+
+  if (isMobile === null) return null;
+
   return (
-    <ResponsiveContainer height={300} width="100%" className="bg-white my-4 w-full h-full flex justify-center items-center">
+    <ResponsiveContainer
+      height="85%"
+      className="bg-white w-full mt-4 h-full flex justify-center items-center"
+    >
       <PieChart>
         <Pie
           activeIndex={activeIndex}
           labelLine={false}
           label={RadianTooltip}
           data={data}
-          innerRadius={50}
-          outerRadius={80}
+          innerRadius={isMobile ? 30 : 80}
+          outerRadius={isMobile ? 50 : 110}
           fill="#8884d8"
           paddingAngle={3}
+          isAnimationActive={true}
+          animationBegin={0}
+          animationDuration={1000}
           onMouseEnter={onPieEnter}
         >
           {data.map((entry, index) => (

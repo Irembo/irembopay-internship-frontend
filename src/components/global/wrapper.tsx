@@ -21,14 +21,23 @@ export default function Wrapper({
       link: "/",
       icon: (
         <svg
-          className="md:w-6 md:h-6 h-8 w-8 transition ease-in duration-200 md:group-hover:text-primary"
-          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 22 21"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="md:w-7 md:h-7 h-8 w-8 transition ease-in duration-200 md:group-hover:text-primary"
         >
-          <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-          <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"
+          />
         </svg>
       ),
     },
@@ -84,8 +93,7 @@ export default function Wrapper({
   return (
     <main className="">
       <aside
-        id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 md:w-64 w-20 h-screen pt-4 transition-transform -translate-x-full bg-primaryLight border-r border-gray-200 sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 md:w-64 w-20 h-screen pt-4 transition-transform bg-primaryLight border-r border-gray-200 translate-x-0"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto bg-primaryLight ">
@@ -121,7 +129,7 @@ export default function Wrapper({
       <section
         className={`p-4 relative ml-20 md:ml-[17rem] pt-24 md:w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] overflow-hidden ${custom}`}
       >
-        <div className="absolute top-8 right-4 inset-x-0 flex md:justify-between w-auto px-4 justify-end">
+        <div className="absolute top-8 sm:right-4 right-0 inset-x-0 flex md:justify-between w-auto sm:px-4 justify-end">
           <h1 className="text-gray-800 font-bold text-2xl md:block hidden">
             {pageTitle}
           </h1>

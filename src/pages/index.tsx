@@ -159,13 +159,13 @@ export default function Home() {
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
         </section>
 
-        <section className="w-full gap-8 xl:flex-row flex-col xl:h-[400px] flex">
-          <div className="flex xl:w-1/2 w-full flex-col">
+        <section className="w-full gap-8 xl:flex-row flex-col h-[800px] xl:h-[60vh] flex">
+          <div className="flex xl:w-1/2 w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Paid Transcations
             </h2>
             {isFetching ? (
-              <div className="w-full h-[400px] flex justify-center items-center">
+              <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>
             ) : (
@@ -173,18 +173,18 @@ export default function Home() {
             )}
           </div>
 
-          <div className="flex xl:w-1/2 w-full h-[400px] flex-col">
+          <div className="flex xl:w-1/2 w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Settled Transcations
             </h2>
             {fetchingPayouts ? (
-              <div className="w-full h-[400px] flex justify-center items-center">
+              <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>
             ) : (
               <SettledTranscations data={dailySettled} />
             )}
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center sm:gap-4 gap-2 flex-wrap">
               <button
                 className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
                   activeCyclePayouts === 7
@@ -241,7 +241,7 @@ export function OneStat({
       initial={{ y: 10 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-[325px] min-w-[325px] pr-2 items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-full sm:w-[325px] sm:min-w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
       <div className="h-12 w-12 shrink-0 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}
@@ -256,7 +256,7 @@ export function OneStat({
           {formatToK(value, ignoreZero)}
         </span>
         {projectedValue ? (
-          <span className="text-sm text-gray-500 font-medium">
+          <span className="sm:text-sm text-[12px] text-gray-500 font-medium">
             Projected increase{" "}
             {projectedValue - value > 0
               ? formatToK(projectedValue - value)
