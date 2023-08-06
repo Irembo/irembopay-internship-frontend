@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 
 import { motion } from "framer-motion";
+import DonutChart from "@/components/dashboard/donut/chart";
 
 export default function Home() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
@@ -132,38 +133,23 @@ export default function Home() {
       { refetchOnMountOrArgChange: true }
     );
 
+  const data = [
+    { name: "Group A", value: 400 },
+    { name: "Group B", value: 300 },
+    { name: "Group C", value: 300 },
+    { name: "Group D", value: 200 },
+  ];
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
   return (
     <>
       <Header />
-      <Wrapper pageTitle="" custom="flex flex-col justify-center min-h-screen gap-16 relative">
+      <Wrapper
+        pageTitle=""
+        custom="flex flex-col justify-center min-h-screen gap-16 relative"
+      >
         <section className="w-full h-1/2 flex justify-center gap-8 -mt-8">
-          {totalInvoices && (
-            <OneStat
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-bar-chart-horizontal-big  text-white"
-                >
-                  <path d="M3 3v18h18" />
-                  <rect width="12" height="4" x="7" y="5" rx="1" />
-                  <rect width="7" height="4" x="7" y="13" rx="1" />
-                </svg>
-              }
-              title="Total Paid Invoices (30 Days)"
-              value={totalInvoices}
-              ignoreZero
-            />
-          )}
-          {loadingTotalInvoices && <IsLoadingOneStat />}
-
           {balances &&
             balances?.map(
               (
@@ -201,40 +187,8 @@ export default function Home() {
                 <Loading />
               </div>
             ) : (
-              <DailyTranscations data={dailyPaid} />
+              <DonutChart data={data} colors={COLORS} />
             )}
-            <div className="flex justify-center gap-4">
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 7
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(7)}
-              >
-                Last Week
-              </button>
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 30
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(30)}
-              >
-                Last Month
-              </button>
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 365
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(365)}
-              >
-                Last Year
-              </button>
-            </div>
           </div>
 
           <div className="flex w-1/2 flex-col">
@@ -303,7 +257,7 @@ export function OneStat({
   return (
     <motion.div
       initial={{ y: 10 }}
-      animate={{ y: 0}}
+      animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="bg-white relative rounded-xl p-4 shadow-md w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
