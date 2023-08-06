@@ -3,12 +3,13 @@ import {
   useGetInvoicesQuery,
   useSearchForTranscationMutation,
 } from "@/services/apiHooks";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { EmptyState, LoadingRow } from "@/components/global/loading";
 import Wrapper from "@/components/global/wrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import Header from "@/components/global/head";
+import { useOnClickOutside } from "@/components/global/onClickOutside";
 
 export interface InvoiceProps {
   id: string;
@@ -64,13 +65,15 @@ export default function Transcations() {
 
   const [invoiceNumber, setInvoiceNumber] = useState<string>("");
   const [status, setStatus] = useState<string | null>(null);
+  const [isSearch, setIsSearch] = useState<boolean>(false);
 
   const [searchInvoices, { isLoading: searching }] =
     useSearchForTranscationMutation();
 
   const searchAction = async () => {
     if (invoiceNumber?.length === 0 && !status) {
-      refetch();
+      isSearch && refetch();
+      setIsSearch(false);
       return;
     }
     await searchInvoices({ accountId, invoiceNumber, status })
@@ -79,6 +82,7 @@ export default function Transcations() {
         setPage(payload?.number);
         setTotalPages(payload?.totalPages);
         setAllInvoices(payload?.content);
+        setIsSearch(true);
       })
       .catch((err) => {
         console.log(err);
@@ -126,6 +130,7 @@ export default function Transcations() {
               placeholder="Invoice Number"
             />
           </form>
+
           <Dropdown
             selectStatus={(val: string) => {
               setStatus(val);
@@ -379,8 +384,13 @@ export function Dropdown({
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeText, setActiveText] = useState("Choose status");
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(ref, () => setShowDropdown(false));
+
   return (
-    <div className="relative inline-block w-[275px] text-left">
+    <div ref={ref} className="relative inline-block w-[275px] text-left">
       <div>
         <button
           onClick={(e) => {
