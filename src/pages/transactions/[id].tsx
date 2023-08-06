@@ -25,9 +25,9 @@ export default function InvoiceView() {
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.3, ease: "easeIn" }}
-          className="w-full bg-white text-gray-600 p-4 py-16 mt-6 rounded-2xl flex gap-2 px-8 flex-col"
+          className="w-full bg-white text-gray-600 p-4 py-16 mt-6 rounded-2xl flex gap-2 lg:px-8 px-4 flex-col"
         >
-          <div className="grid grid-cols-2 gap-y-6 w-1/2 mx-auto place-content-center">
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-y-6 xl:w-1/2 w-full mx-auto place-content-center">
             <OneValue
               label="Invoice Number"
               value={data?.invoiceNumber}
@@ -94,7 +94,7 @@ export default function InvoiceView() {
               }
             />
             <OneValue
-              label="Payment Account Identifier"
+              label="Account Identifier"
               value={data?.identifier ?? "N/A"}
               svg={
                 <svg
@@ -157,7 +157,7 @@ export default function InvoiceView() {
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.3, ease: "easeIn", delay: 0.1 }}
-          className="w-full relative flex justify-around gap-8 py-20 bg-white text-gray-600 p-4 px-8 rounded-2xl"
+          className="w-full relative flex xl:flex-row flex-col xl:justify-around justify-center items-center gap-8 xl:py-20 py-8 bg-white text-gray-600 p-4 xl:px-8 px-0 rounded-2xl"
         >
           <OneStage
             title="Created"
@@ -195,7 +195,7 @@ export default function InvoiceView() {
             description="Payout has been settled to the merchant"
           />
 
-          <div className="absolute z-40 inset-x-0 w-[70%] mx-auto h-[2px] bg-gray-500 top-2/3" />
+          <div className="absolute z-40 inset-x-0 w-[70%] hidden mx-auto h-[2px] bg-gray-500 top-[60%]" />
         </motion.section>
       )}
     </Wrapper>
@@ -214,8 +214,13 @@ function OneStage({
   description: string;
 }) {
   return (
-    <div className="flex flex-col relative z-50 w-[150px] h-[120px] justify-start items-center gap-3">
-      <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col relative w-[150px] h-[120px] justify-start items-center gap-3">
+      <div
+        className={`absolute xl:block hidden z-40 -inset-x-2/3 w-auto mx-auto h-[2px] bg-gray-500 top-[72.5%] ${
+          title === "Created" && "left-8"
+        } ${title === "Settled" && "right-8"}`}
+      />
+      <div className="flex flex-col justify-center items-center relative z-50">
         <h3
           className={`text-xl flex gap-2 items-center font-semibold ${
             isDone ? "" : "text-gray-400"
@@ -253,7 +258,7 @@ function OneStage({
         </span>
       </div>
 
-      <div className="h-[100px] w-[100px] bg-white rounded-full flex justify-center items-center">
+      <div className="h-[100px] relative z-50 w-[100px] bg-white rounded-full flex justify-center items-center">
         <div
           className={` rounded-full flex justify-center shrink-0 items-center ${
             isDone
@@ -309,9 +314,12 @@ export function OneValue({
   svg: React.ReactNode;
 }) {
   return (
-    <div className="flex gap-2 items-center flex-row w-max">
-      {svg}
-      <p className="text-base font-semibold text-gray-500">{label}</p>
+    <div className="flex gap-2 sm:items-center sm:flex-row flex-col w-max">
+      <div className="flex gap-2">
+        {svg}
+        <p className="text-base font-semibold text-gray-500">{label}</p>
+      </div>
+
       <span className="text-gray-500 text-sm font-medium">{value}</span>
     </div>
   );
