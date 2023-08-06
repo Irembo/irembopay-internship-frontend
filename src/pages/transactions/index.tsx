@@ -23,11 +23,17 @@ export interface InvoiceProps {
 }
 
 export default function Transcations() {
+  // const accountId = "9f6d595a-85fa-4527-847d-8c985e7dd405";
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
 
   const [page, setPage] = React.useState(1);
 
-  const { data, isLoading, refetch } = useGetInvoicesQuery({ accountId, page });
+  const { data, isLoading, refetch } = useGetInvoicesQuery(
+    { accountId, page },
+    {
+      skip: !accountId,
+    }
+  );
 
   const router = useRouter();
 
@@ -89,6 +95,14 @@ export default function Transcations() {
       });
   };
 
+ const [isReady, setIsReady] = useState(false);
+
+ useEffect(() => {
+   setIsReady(true);
+ }, []);
+
+ if (!isReady) return null;
+
   return (
     <Wrapper pageTitle="Transcations">
       <Header title="Transcations" />
@@ -106,9 +120,9 @@ export default function Transcations() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-hash text-[#E0E0E0]"
                 >
                   <line x1="4" x2="20" y1="9" y2="9" />
@@ -257,9 +271,9 @@ export default function Transcations() {
                         aria-hidden="true"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </button>
@@ -353,9 +367,9 @@ export default function Transcations() {
                         aria-hidden="true"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </button>
