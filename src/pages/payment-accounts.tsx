@@ -177,7 +177,7 @@ export default function Transcations() {
 
           <div
             onClick={() => scrollHorizontal("right")}
-            className="w-8 group-hover:visible invisible h-8 transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -right-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
+            className="w-8 group-hover:visible lg:invisible visible h-8 transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -right-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +196,7 @@ export default function Transcations() {
           </div>
           <div
             onClick={() => scrollHorizontal("left")}
-            className="w-8 h-8  group-hover:visible invisible transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -left-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
+            className="w-8 h-8  group-hover:visible lg:invisible visible transition-all ease-in duration-150 rounded-full bg-white shadow-lg absolute -left-4 flex justify-center top-1/2 -translate-y-1/2 items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -215,8 +215,8 @@ export default function Transcations() {
           </div>
         </div>
 
-        <section className="w-full bg-white text-gray-600 p-4 my-6 rounded-2xl flex gap-2 px-8">
-          <div className="flex flex-col w-[30%] gap-y-6">
+        <section className="w-full bg-white text-gray-600 p-4 my-6 xl:flex-row flex-col rounded-2xl flex xl:gap-2 gap-8 px-8">
+          <div className="flex flex-col xl:w-[30%] w-full gap-y-6">
             {isFetching ? (
               <div className="animate-pulse min-w-[200px] w-[200px] bg-gray-300 py-5 px-4 rounded-lg" />
             ) : (
@@ -242,7 +242,7 @@ export default function Transcations() {
               />
             )}
           </div>
-          <div className="w-[70%] flex flex-wrap h-full justify-start gap-8">
+          <div className="xl:w-[70%] w-full flex flex-wrap h-full justify-start gap-8">
             {loadingBalance && <IsLoadingOneStat />}
             {balance && (
               <OneStat
@@ -359,8 +359,12 @@ export default function Transcations() {
                           Reference
                         </th>
                         <th className="px-3 py-3.5 text-left">Amount</th>
-                        <th className="px-3 py-3.5 text-left">Narration</th>
-                        <th className="px-3 py-3.5 text-left">Date</th>
+                        <th className="px-3 py-3.5 text-left hidden lg:table-cell">
+                          Narration
+                        </th>
+                        <th className="px-3 py-3.5 text-left hidden lg:table-cell">
+                          Date
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-500">
