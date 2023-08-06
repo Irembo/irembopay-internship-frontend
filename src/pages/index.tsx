@@ -1,4 +1,3 @@
-import DailyTranscations from "@/components/dashboard/charts/dailyTranscations";
 import SettledTranscations from "@/components/dashboard/charts/settledTranscations";
 import Header from "@/components/global/head";
 import Loading from "@/components/global/loading";
@@ -6,19 +5,17 @@ import Wrapper from "@/components/global/wrapper";
 import { formatToK } from "@/lib/formatters";
 import {
   useGetBalanceQuery,
-  useGetDailyPaidInvoicesQuery,
   useGetDailySettledPayoutsQuery,
   useGetProjectedBalanceQuery,
-  useGetTotalPaidInvoicesQuery,
+  useGetStatusGroupedQuery,
 } from "@/services/apiHooks";
 import { useState } from "react";
 
 import { motion } from "framer-motion";
+import DonutChart from "@/components/dashboard/donut/chart";
 
 export default function Home() {
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
-  const { data: totalInvoices, isLoading: loadingTotalInvoices } =
-    useGetTotalPaidInvoicesQuery(accountId);
 
   const { data: balances, isLoading: loadingBalances } =
     useGetBalanceQuery(accountId);
@@ -110,19 +107,8 @@ export default function Home() {
     }
   };
 
-  const [activeCycleInvoices, setActiveCycleInvoices] = useState(30);
   const [activeCyclePayouts, setActiveCyclePayouts] = useState(30);
 
-  const { data: dailyPaid, isFetching: fetchingInvoices } =
-    useGetDailyPaidInvoicesQuery(
-      {
-        accountId,
-        activeCycleInvoices,
-      },
-      {
-        refetchOnMountOrArgChange: true,
-      }
-    );
   const { data: dailySettled, isFetching: fetchingPayouts } =
     useGetDailySettledPayoutsQuery(
       {
@@ -132,38 +118,20 @@ export default function Home() {
       { refetchOnMountOrArgChange: true }
     );
 
+  const { data: grouped, isFetching } = useGetStatusGroupedQuery(accountId, {
+    skip: !accountId,
+  });
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
   return (
     <>
       <Header />
-      <Wrapper pageTitle="" custom="flex flex-col justify-center min-h-screen gap-16 relative">
-        <section className="w-full h-1/2 flex justify-center gap-8 -mt-8">
-          {totalInvoices && (
-            <OneStat
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-bar-chart-horizontal-big  text-white"
-                >
-                  <path d="M3 3v18h18" />
-                  <rect width="12" height="4" x="7" y="5" rx="1" />
-                  <rect width="7" height="4" x="7" y="13" rx="1" />
-                </svg>
-              }
-              title="Total Paid Invoices (30 Days)"
-              value={totalInvoices}
-              ignoreZero
-            />
-          )}
-          {loadingTotalInvoices && <IsLoadingOneStat />}
-
+      <Wrapper
+        pageTitle=""
+        custom="flex flex-col justify-center pt-[10rem] pb-16 h-auto min-h-screen gap-16 relative"
+      >
+        <section className="w-full h-1/2 flex justify-center flex-wrap gap-8 -mt-8">
           {balances &&
             balances?.map(
               (
@@ -191,64 +159,32 @@ export default function Home() {
           {loadingBalances && Array(4).fill(<IsLoadingOneStat />)}
         </section>
 
-        <section className="w-full gap-8 h-[400px] flex">
-          <div className="flex w-1/2 flex-col">
+        <section className="w-full gap-8 xl:flex-row flex-col h-[800px] xl:h-[60vh] flex">
+          <div className="flex xl:w-1/2 w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Paid Transcations
             </h2>
-            {fetchingInvoices ? (
-              <div className="w-full h-[400px] flex justify-center items-center">
+            {isFetching ? (
+              <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>
             ) : (
-              <DailyTranscations data={dailyPaid} />
+              <DonutChart data={grouped} colors={COLORS} />
             )}
-            <div className="flex justify-center gap-4">
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 7
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(7)}
-              >
-                Last Week
-              </button>
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 30
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(30)}
-              >
-                Last Month
-              </button>
-              <button
-                className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
-                  activeCycleInvoices === 365
-                    ? "bg-primaryLight text-white"
-                    : "bg-white text-gray-500"
-                }`}
-                onClick={() => setActiveCycleInvoices(365)}
-              >
-                Last Year
-              </button>
-            </div>
           </div>
 
-          <div className="flex w-1/2 flex-col">
+          <div className="flex xl:w-1/2 w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Settled Transcations
             </h2>
             {fetchingPayouts ? (
-              <div className="w-full h-[400px] flex justify-center items-center">
+              <div className="w-full h-[500px] flex justify-center items-center">
                 <Loading />
               </div>
             ) : (
               <SettledTranscations data={dailySettled} />
             )}
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center sm:gap-4 gap-2 flex-wrap">
               <button
                 className={`py-2 px-4 rounded-3xl text-sm font-semibold ${
                   activeCyclePayouts === 7
@@ -303,9 +239,9 @@ export function OneStat({
   return (
     <motion.div
       initial={{ y: 10 }}
-      animate={{ y: 0}}
+      animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-[325px] pr-2 items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-full sm:w-[325px] sm:min-w-[325px] pr-2 items-start justify-start gap-8 flex"
     >
       <div className="h-12 w-12 shrink-0 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}
@@ -320,7 +256,7 @@ export function OneStat({
           {formatToK(value, ignoreZero)}
         </span>
         {projectedValue ? (
-          <span className="text-sm text-gray-500 font-medium">
+          <span className="sm:text-sm text-[12px] text-gray-500 font-medium">
             Projected increase{" "}
             {projectedValue - value > 0
               ? formatToK(projectedValue - value)
