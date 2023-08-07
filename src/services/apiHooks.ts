@@ -90,7 +90,7 @@ export const apiHooks = createApi({
     }),
     searchForTranscation: builder.mutation({
       query: ({ accountId, invoiceNumber = null, status = null }) => ({
-        url: `payment-invoice/search/${accountId}?invoiceNumber=${invoiceNumber}&status=${status}`,
+        url: `payment-invoice/search?accountId=${accountId}&invoiceNumber=${invoiceNumber}&status=${status}`,
       }),
     }),
   }),

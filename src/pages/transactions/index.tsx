@@ -95,13 +95,13 @@ export default function Transcations() {
       });
   };
 
- const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
- useEffect(() => {
-   setIsReady(true);
- }, []);
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
 
- if (!isReady) return null;
+  if (!isReady) return null;
 
   return (
     <Wrapper pageTitle="Transcations">
@@ -109,7 +109,7 @@ export default function Transcations() {
 
       <section className="rounded-lg bg-white p-4 gap-4 mt-8 flex flex-col">
         <h2 className="text-gray-600">Search your transcations</h2>
-        <div className="flex xl:gap-16 gap-8 xl:justify-start justify-between xl:flex-row lg:flex-col flex-row">
+        <div className="flex relative xl:gap-16 gap-8 xl:justify-start justify-between xl:flex-row lg:flex-col flex-row">
           <div className="flex xl:gap-16 gap-8 flex-row">
             <form className="relative mb-6">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -166,6 +166,20 @@ export default function Transcations() {
           >
             {searching ? "Searching..." : "Search"}
           </button>
+
+          {(invoiceNumber?.length > 0 || status) && (
+            <p
+              onClick={() => {
+                setInvoiceNumber("");
+                setStatus(null);
+                setIsSearch(false);
+                refetch();
+              }}
+              className="underline text-blue-500 cursor-pointer font-medium text-xs absolute left-2 bottom-0"
+            >
+              Reset filters
+            </p>
+          )}
         </div>
       </section>
       <div className="w-auto">
