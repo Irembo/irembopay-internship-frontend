@@ -4,7 +4,6 @@ import Header from "@/components/global/head";
 import { IsLoadingOneStat, OneStat } from ".";
 import { OneValue } from "./transactions/[id]";
 import {
-  useGet30DaysTotalPaidQuery,
   useGetBalancePaymentAccountQuery,
   useGetPaymentAccountPayoutsQuery,
   useGetPaymentAccountsQuery,
@@ -57,17 +56,6 @@ export default function Transcations() {
 
   const { data: balance, isFetching: loadingBalance } =
     useGetBalancePaymentAccountQuery(
-      {
-        accountId,
-        accountNumber,
-      },
-      {
-        skip: !accountNumber || !accountId,
-      }
-    );
-
-  const { data: totalPaid, isFetching: loadingTotalPaid } =
-    useGet30DaysTotalPaidQuery(
       {
         accountId,
         accountNumber,
@@ -306,7 +294,9 @@ export default function Transcations() {
             )}
           </div>
           <div className="xl:w-[70%] w-full flex flex-wrap h-full justify-start gap-8">
-            {loadingBalance && <IsLoadingOneStat />}
+            {((loadingBalance && !balance) || isFetching) && (
+              <IsLoadingOneStat />
+            )}
             {balance && (
               <OneStat
                 title="Account Balance (RWF)"
@@ -331,33 +321,9 @@ export default function Transcations() {
                 }
               />
             )}
-            {loadingTotalPaid && <IsLoadingOneStat />}
-            {totalPaid && (
-              <OneStat
-                title="Total Paid Invoices (30 Days)"
-                value={totalPaid ? totalPaid[0]?.count : 0}
-                ignoreZero
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-bar-chart-horizontal-big  text-white"
-                  >
-                    <path d="M3 3v18h18" />
-                    <rect width="12" height="4" x="7" y="5" rx="1" />
-                    <rect width="7" height="4" x="7" y="13" rx="1" />
-                  </svg>
-                }
-              />
+            {((loadingValue7 && !last7DaysValue) || isFetching) && (
+              <IsLoadingOneStat />
             )}
-            {loadingValue7 && <IsLoadingOneStat />}
             {last7DaysValue && (
               <OneStat
                 title="Generated Revenue Last 7 Days (RWF)"
@@ -382,7 +348,9 @@ export default function Transcations() {
                 }
               />
             )}
-            {loadingLast30 && <IsLoadingOneStat />}
+            {((loadingLast30 && !last30DaysValue) || isFetching) && (
+              <IsLoadingOneStat />
+            )}
             {last30DaysValue && (
               <OneStat
                 title="Generated Revenue Last 30 Days (RWF)"
@@ -466,7 +434,7 @@ export default function Transcations() {
                             </tr>
                           )
                         )}
-                      {isLoading &&
+                      {(isLoading || isFetching) &&
                         [...Array(5)].map((_, index) => (
                           <LoadingRow colSpan={4} key={index} />
                         ))}

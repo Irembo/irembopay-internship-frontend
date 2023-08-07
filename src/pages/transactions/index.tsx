@@ -240,7 +240,7 @@ export default function Transcations() {
                       ))}
                     {isLoading &&
                       [...Array(15)].map((_, index) => (
-                        <LoadingRow colSpan={4} key={index} />
+                        <LoadingRow colSpan={5} key={index} />
                       ))}
                     {allInvoices?.length === 0 && (
                       <EmptyState
