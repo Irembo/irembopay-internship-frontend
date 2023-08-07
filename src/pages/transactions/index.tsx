@@ -153,6 +153,7 @@ export default function Transcations() {
                   setInvoiceNumber("");
                 }
               }}
+              reset={status === null}
             />
           </div>
 
@@ -414,11 +415,19 @@ export function getStatus(status: string) {
 
 export function Dropdown({
   selectStatus,
+  reset,
 }: {
   selectStatus: (status: string) => void;
+  reset: boolean;
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeText, setActiveText] = useState("Choose status");
+
+  useEffect(() => {
+    if (reset) {
+      setActiveText("Choose status");
+    }
+  }, [reset]);
 
   const ref = useRef<HTMLDivElement>(null);
 
