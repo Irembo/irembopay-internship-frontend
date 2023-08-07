@@ -114,7 +114,7 @@ export default function Home() {
     }
   };
 
-  const [activeCyclePayouts, setActiveCyclePayouts] = useState(365);
+  const [activeCyclePayouts, setActiveCyclePayouts] = useState(30);
 
   const { data: dailySettled, isFetching: fetchingPayouts } =
     useGetDailySettledPayoutsQuery(
