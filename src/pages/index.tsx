@@ -146,7 +146,7 @@ export default function Home() {
         pageTitle=""
         custom="flex flex-col justify-center pt-[10rem] pb-16 h-auto min-h-screen gap-16 relative"
       >
-        <section className="w-full h-1/2 flex justify-center flex-wrap gap-8 -mt-8">
+        <section className="w-full h-1/2 flex justify-center flex-wrap gap-4 -mt-8">
           {balances &&
             balances?.map(
               (
@@ -178,9 +178,9 @@ export default function Home() {
         </section>
 
         <section className="w-full gap-8 xl:flex-row flex-col h-[800px] xl:h-[60vh] flex">
-          <div className="flex xl:w-1/2 w-full h-full flex-col">
+          <div className="flex xl:w-[60%] w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
-              Daily Paid Transcations
+              Transcations Status
             </h2>
             {isFetching || !grouped ? (
               <div className="w-full h-[500px] flex justify-center items-center">
@@ -191,7 +191,7 @@ export default function Home() {
             )}
           </div>
 
-          <div className="flex xl:w-1/2 w-full h-full flex-col">
+          <div className="flex xl:w-[60%] w-full h-full flex-col">
             <h2 className="text-gray-800 font-semibold text-xl">
               Daily Settled Transcations
             </h2>
@@ -259,7 +259,7 @@ export function OneStat({
       initial={{ y: 10 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-white relative rounded-xl p-4 shadow-md w-full sm:w-[325px] sm:min-w-[325px] pr-2 items-start justify-start gap-8 flex"
+      className="bg-white relative rounded-xl p-4 shadow-md w-full sm:w-[290px] sm:min-w-[290px] pr-1 items-start justify-start gap-6 flex"
     >
       <div className="h-12 w-12 shrink-0 my-auto bg-primary/70 rounded-md flex justify-center items-center">
         {icon}

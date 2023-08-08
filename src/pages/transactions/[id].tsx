@@ -27,7 +27,7 @@ export default function InvoiceView() {
           transition={{ duration: 0.3, ease: "easeIn" }}
           className="w-full bg-white text-gray-600 p-4 py-16 mt-6 rounded-2xl flex gap-2 lg:px-8 px-4 flex-col"
         >
-          <div className="grid lg:grid-cols-2 grid-cols-1 gap-y-6 xl:w-1/2 w-full mx-auto place-content-center">
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 gap-x-16 xl:w-1/2 w-full mx-auto place-content-center">
             <OneValue
               label="Invoice Number"
               value={data?.invoiceNumber}

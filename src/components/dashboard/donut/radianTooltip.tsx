@@ -21,11 +21,13 @@ const RadianTooltip = (props: any) => {
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
   const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 80) * cos;
-  const my = cy + (outerRadius + 200) * sin;
+  const mx = cx + (outerRadius + 50) * cos;
+  const my = cy + (outerRadius + 150) * sin;
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
+
+  console.log(name);
 
   return (
     <g className="">
@@ -67,6 +69,7 @@ const RadianTooltip = (props: any) => {
         dy={18}
         textAnchor={textAnchor}
         fill="#999"
+        className="text-xs"
       >
         {`(${value} ~ ${(percent * 100).toFixed(2)}%)`}
       </text>

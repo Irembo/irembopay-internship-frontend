@@ -118,7 +118,11 @@ export default function Wrapper({
             </li>
             {sideItems.map((item, i) => (
               <OneSidebar
-                isActive={router.pathname === item.link}
+                isActive={
+                  item.link !== "/"
+                    ? router.pathname.startsWith(item.link)
+                    : router.pathname === item.link
+                }
                 key={i}
                 {...item}
               />
@@ -127,7 +131,7 @@ export default function Wrapper({
         </div>
       </aside>
       <section
-        className={`p-4 relative ml-20 md:ml-[17rem] pt-24 md:w-[calc(100%_-_19rem)] h-full bg-[#f0ede6] overflow-hidden ${custom}`}
+        className={`p-4 relative ml-20 md:ml-[16rem] pt-24 md:w-[calc(100%_-_16rem)] h-full bg-[#f0ede6] overflow-hidden ${custom}`}
       >
         <div className="absolute top-8 sm:right-4 right-0 inset-x-0 flex md:justify-between w-auto sm:px-4 justify-end">
           <h1 className="text-gray-800 font-bold text-2xl md:block hidden">

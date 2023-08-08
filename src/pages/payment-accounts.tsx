@@ -75,7 +75,7 @@ export default function Transcations() {
       skip: !accountNumber,
     });
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
 
   const { data: allPayouts, isLoading: isLoading } =
     useGetPaymentAccountPayoutsQuery(
@@ -100,7 +100,7 @@ export default function Transcations() {
 
   // Helper function to handle pagination click
   const handlePageClick = (pageNumber: number) => {
-    if (pageNumber < 1) {
+    if (pageNumber < 0) {
       return;
     }
     if (pageNumber > totalPages) {
@@ -456,7 +456,7 @@ export default function Transcations() {
                     <button
                       className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                       onClick={() => handlePageClick(page - 1)}
-                      disabled={page === 1} // Disable the button if on the first page
+                      disabled={page === 0} // Disable the button if on the first page
                     >
                       <span className="sr-only">Previous</span>
                       <svg
@@ -474,11 +474,11 @@ export default function Transcations() {
                     </button>
 
                     {/* Show first page always */}
-                    {/* {page === 1 && (
+                    {page === 0 && (
                       <button
                         aria-current="page"
                         className={`relative z-10 inline-flex items-center ${
-                          page === 1
+                          page === 0
                             ? "bg-primary text-white" // Highlight the current page
                             : "text-gray-400"
                         } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
@@ -486,7 +486,7 @@ export default function Transcations() {
                       >
                         1
                       </button>
-                    )} */}
+                    )}
 
                     {range(1, totalPages).map((pg) => (
                       <button
@@ -498,7 +498,7 @@ export default function Transcations() {
                         } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-40 focus:z-20 focus:outline-offset-0`}
                         onClick={() => handlePageClick(pg)}
                       >
-                        {pg}
+                        {pg + 1}
                       </button>
                     ))}
                     {/* Show ellipsis (...) and the last 3 pages */}

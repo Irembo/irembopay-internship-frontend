@@ -26,7 +26,7 @@ export default function Transcations() {
   // const accountId = "9f6d595a-85fa-4527-847d-8c985e7dd405";
   const accountId = "767c9673-298a-4e1d-b325-eb44577494d8";
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
 
   const { data, isLoading, refetch } = useGetInvoicesQuery(
     { accountId, page },
@@ -56,7 +56,7 @@ export default function Transcations() {
 
   // Helper function to handle pagination click
   const handlePageClick = (pageNumber: number) => {
-    if (pageNumber < 1) {
+    if (pageNumber < 0) {
       return;
     }
     if (pageNumber > totalPages) {
@@ -71,6 +71,7 @@ export default function Transcations() {
 
   const [invoiceNumber, setInvoiceNumber] = useState<string>("");
   const [status, setStatus] = useState<string | null>(null);
+  const [nonApiStatus, setNonApiStatus] = useState<string | null>(null);
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
   const [searchInvoices, { isLoading: searching }] =
@@ -85,6 +86,7 @@ export default function Transcations() {
     await searchInvoices({ accountId, invoiceNumber, status })
       .unwrap()
       .then((payload) => {
+        setNonApiStatus(status);
         setPage(payload?.number);
         setTotalPages(payload?.totalPages);
         setAllInvoices(payload?.content);
@@ -227,12 +229,14 @@ export default function Transcations() {
                           >
                             <div
                               className={`w-max h-max px-4 py-1 rounded-3xl ${getStatus(
-                                token?.status === "PENDING_APPROVAL"
+                                token?.status === "PENDING_APPROVAL" &&
+                                  nonApiStatus !== "PAYOUT_INITIATED"
                                   ? "PENDING_APPROVAL".toLowerCase()
                                   : token?.paymentStatus.toLowerCase()
                               )}`}
                             >
-                              {token?.status === "PENDING_APPROVAL"
+                              {token?.status === "PENDING_APPROVAL" &&
+                              nonApiStatus !== "PAYOUT_INITIATED"
                                 ? "PENDING_APPROVAL"
                                 : token?.paymentStatus}
                             </div>
@@ -257,7 +261,7 @@ export default function Transcations() {
                       [...Array(15)].map((_, index) => (
                         <LoadingRow colSpan={5} key={index} />
                       ))}
-                    {allInvoices?.length === 0 && (
+                    {allInvoices?.length === 0 && !isLoading && (
                       <EmptyState
                         colSpan={4}
                         message="No transcations available"
@@ -276,7 +280,7 @@ export default function Transcations() {
                     <button
                       className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                       onClick={() => handlePageClick(page - 1)}
-                      disabled={page === 1} // Disable the button if on the first page
+                      disabled={page === 0} // Disable the button if on the first page
                     >
                       <span className="sr-only">Previous</span>
                       <svg
@@ -294,23 +298,20 @@ export default function Transcations() {
                     </button>
                   )}
 
-                  {/* Show first page always */}
-                  {page === 1 && (
-                    <button
-                      aria-current="page"
-                      className={`relative z-10 inline-flex items-center ${
-                        page === 1
-                          ? "bg-primary text-white" // Highlight the current page
-                          : "text-gray-400"
-                      } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
-                      onClick={() => handlePageClick(1)}
-                    >
-                      1
-                    </button>
-                  )}
+                  <button
+                    aria-current="page"
+                    className={`relative z-10 inline-flex items-center ${
+                      page === 0
+                        ? "bg-primary text-white" // Highlight the current page
+                        : "text-gray-900"
+                    } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0`}
+                    onClick={() => handlePageClick(0)}
+                  >
+                    1
+                  </button>
 
                   {range(
-                    Math.max(2, page - numPagesAfterDots),
+                    Math.max(1, page - numPagesAfterDots),
                     Math.min(totalPages - 1, page + numPagesAfterDots)
                   ).map((pg) => (
                     <button
@@ -319,10 +320,10 @@ export default function Transcations() {
                         pg === page
                           ? "z-10 bg-primary text-white" // Highlight the current page
                           : "text-gray-900"
-                      } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                      } px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0`}
                       onClick={() => handlePageClick(pg)}
                     >
-                      {pg}
+                      {pg + 1}
                     </button>
                   ))}
                   {/* Show ellipsis (...) and the last 3 pages */}
@@ -337,40 +338,40 @@ export default function Transcations() {
                     <>
                       <button
                         className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
-                          page === totalPages - 2
+                          page === totalPages - 3
                             ? "z-10 bg-primary text-white" // Highlight the current page
                             : "text-gray-900"
                         } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
-                        onClick={() => handlePageClick(totalPages - 1)}
+                        onClick={() => handlePageClick(totalPages - 3)}
+                      >
+                        {totalPages - 3}
+                      </button>
+                      <button
+                        className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                          page === totalPages - 2
+                            ? "z-10 bg-primary text-white" // Highlight the current page
+                            : "text-gray-900"
+                        } ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 md:inline-flex`}
+                        onClick={() => handlePageClick(totalPages - 2)}
                       >
                         {totalPages - 2}
                       </button>
                       <button
-                        className={`relative hidden items-center px-4 py-2 text-sm font-semibold ${
+                        className={`relative inline-flex items-center rounded-r-md px-2 py-2 font-semibold text-sm text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
                           page === totalPages - 1
-                            ? "z-10 bg-primary text-white" // Highlight the current page
-                            : "text-gray-900"
-                        } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex`}
-                        onClick={() => handlePageClick(totalPages - 1)}
-                      >
-                        {totalPages - 1}
-                      </button>
-                      <button
-                        className={`relative inline-flex items-center rounded-r-md px-2 py-2 font-semibold text-sm text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                          page === totalPages
                             ? "bg-primary text-white" // Highlight the current page
                             : "text-gray-900"
                         }`}
-                        onClick={() => handlePageClick(totalPages)}
+                        onClick={() => handlePageClick(totalPages - 1)}
                       >
-                        {totalPages}
+                        {totalPages - 1}
                       </button>
                     </>
                   )}
 
                   {totalPages > 1 && (
                     <button
-                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                       onClick={() => handlePageClick(page + 1)}
                       disabled={page === totalPages} // Disable the button if on the last page
                     >
