@@ -106,11 +106,11 @@ export default function Transcations() {
   if (!isReady) return null;
 
   return (
-    <Wrapper pageTitle="Transcations">
-      <Header title="Transcations" />
+    <Wrapper pageTitle="Transactions">
+      <Header title="Transactions" />
 
       <section className="rounded-lg bg-white p-4 gap-4 mt-8 flex flex-col">
-        <h2 className="text-gray-600">Search your transcations</h2>
+        <h2 className="text-gray-600">Search your transactions</h2>
         <div className="flex relative xl:gap-16 gap-8 xl:justify-start justify-between xl:flex-row lg:flex-col flex-row">
           <div className="flex xl:gap-16 gap-8 flex-row">
             <form className="relative mb-6">
